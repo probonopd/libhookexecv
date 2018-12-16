@@ -112,6 +112,7 @@ ARCH=x86_64 ./appimagetool-x86_64.AppImage -g ./Wine.AppDir
 export WINEDLLOVERRIDES="mscoree,mshtml="
 export WINEPREFIX=$(readlink -f wineprefix)
 ./Wine*.AppImage wineboot
+( cd wineprefix/drive_c/ ; rm -rf users ; ln -s /home users ) # Do not hardcode username in wineprefix
 ls -lh wineprefix/
 
 wget -c "https://notepad-plus-plus.org/repository/7.x/7.6.1/npp.7.6.1.bin.minimalist.7z"
