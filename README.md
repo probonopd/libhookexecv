@@ -89,22 +89,58 @@ ERROR: ld.so: object '/home/me/Downloads/wineversion/3.5/lib/libhookexecv.so' fr
 /lib/ld-linux.so.2: could not open
 ```
 
-For testing, we patch `/lib/ld-linux.so.2` and replace it with a relative path.
+This is because `wine-preloader` [needs to be patched](https://github.com/Hackerl/Wine_Appimage/issues/11#issuecomment-447643908)!
+
+## Missing libraries
+
+Apparently Wine makes the implicit assumption that certain 32-bit libraries are present on the system.
+
+How can we easily get and bundle those?
 
 ```
-( cd lib/ ; ln -s ld-linux.so.2 ld-linux.so )
-find bin/ -executable -type f -exec sed -i -e 's|/lib/ld-linux.so.2|.//lib/ld-linux.so|g' {} \;
-```
-
-However this does not work because Wine does `chdir()`, so the relative path does not help
-
-```
-strace -f ./AppRun explorer 2>&1 | grep " chdir"
-[pid 25152] chdir("/home/me/.wine")     = 0
-[pid 25152] chdir("/tmp/.wine-999/server-15-be051") = 0
-[pid 25154] chdir("/home/me/.wine")     = 0
-[pid 25154] chdir("/tmp/.wine-999/server-15-be051") = 0
-[pid 25157] chdir("/home/me/.wine/dosdevices/z:/home/me/new/wineversion/3.5") = 0
-[pid 25159] chdir("/home/me/.wine/dosdevices/c:/windows") = 0
-[pid 25161] chdir("/home/me/.wine/dosdevices/c:/windows/system32") = 0
+find lib/wine/ -type f -exec strings {} \; | grep "lib.*\.so\.[1-9]*$" | sort | uniq
+libasound.so.2
+libcapi20.so.3
+libc.so.6
+libcups.so.2
+libdbus-1.so.3
+libexif.so.12
+libfontconfig.so.1
+libfreetype.so.6
+libGL.so.1
+libGLU.so.1
+libgnutls.so.26
+libgphoto2.so.2
+libgsm.so.1
+libgssapi_krb5.so.2
+libhal.so.1
+libjpeg.so.8
+libkrb5.so.3
+liblber-2.4.so.2
+liblcms2.so.2
+libldap_r-2.4.so.2
+libm.so.6
+libncurses.so.5
+libodbc.so.1
+libopenal.so.1
+libOpenCL.so.1
+libOSMesa.so.6
+libresolv.so.2
+librt.so.1
+libsane.so.1
+libtiff.so.4
+libwine.so.1
+libX11.so.6
+libXcomposite.so.1
+libXcursor.so.1
+libXext.so.6
+libXfixes.so.3
+libXinerama.so.1
+libXi.so.6
+libxml2.so.2
+libXrandr.so.2
+libXrender.so.1
+libxslt.so.1
+libXxf86vm.so.1
+libz.so.1
 ```
