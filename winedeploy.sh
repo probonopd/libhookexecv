@@ -127,7 +127,7 @@ cd ..
 export WINEDLLOVERRIDES="mscoree,mshtml="
 mkdir -p ./Wine.AppDir/wineprefix
 export WINEPREFIX=$(readlink -f ./Wine.AppDir/wineprefix)
-./Wine*.AppImage wineboot
+./Wine.AppDir/AppRun wineboot
 
 wget -c "https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-x86_64.AppImage"
 chmod +x ./appimagetool-x86_64.AppImage
