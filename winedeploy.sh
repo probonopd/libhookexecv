@@ -22,12 +22,12 @@ URLS=$(apt-get --allow-unauthenticated -o Apt::Get::AllowUnauthenticated=true \
 -o APT::Get::List-Cleanup=0 -o APT::Get::AllowUnauthenticated=1 \
 -o Debug::pkgProblemResolver=true -o Debug::pkgDepCache::AutoInstall=true \
 -o APT::Install-Recommends=0 -o APT::Install-Suggests=0 -y \
-install --print-uris wine:i386 unionfs-fuse:i386 | grep "_i386" | grep -v "wine" | cut -d "'" -f 2 )
+install --print-uris wine:i386 | grep "_i386" | grep -v "wine" | cut -d "'" -f 2 )
 
 wget -c $URLS
 
 # Get unionfs-fuse to make shared read-only wineprefix usable for every user
-# apt download unionfs-fuse
+apt download fuse:i386 unionfs-fuse:i386 libfuse2:i386
 
 # Get suitable old ld-linux.so and the stuff that comes with it
 # apt download libc6:i386 # It is already included above
