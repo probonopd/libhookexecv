@@ -37,9 +37,18 @@ However, there are two issues with this:
 ## Solution
 
 ```
+# Get Wine
+wget https://www.playonlinux.com/wine/binaries/linux-x86/PlayOnLinux-wine-3.5-linux-x86.pol
+tar xfz PlayOnLinux-wine-*-linux-x86.pol
+cd wineversion/*/
+
 # Get suitable old ld-linux.so and the stuff that comes with it
 wget http://ftp.us.debian.org/debian/pool/main/g/glibc/libc6_2.19-18+deb8u10_i386.deb
 dpkg -x libc6_2.19-18+deb8u10_i386.deb  .
+
+# Make absolutely sure it will not load stuff from /lib or /usr
+sed -i -e 's|/usr|/xxx|g' lib/ld-linux.so.2
+sed -i -e 's|/lib|/XXX|g' lib/ld-linux.so.2
 
 # Get libhookexecv.so
 wget -c https://github.com/probonopd/libhookexecv/releases/download/continuous/libhookexecv.so -O lib/libhookexecv.so 
