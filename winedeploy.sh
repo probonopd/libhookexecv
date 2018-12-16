@@ -114,4 +114,4 @@ ls -lh wineprefix/
 wget -c "https://notepad-plus-plus.org/repository/7.x/7.6.1/npp.7.6.1.bin.minimalist.7z"
 7z x -owineprefix/drive_c/windows/system32/ npp*.7z # system32 is on Windows $PATH equivalent
 
-tar xfvz wineprefix.tar.gz wineprefix/
+tar cfvz wineprefix.tar.gz wineprefix/
