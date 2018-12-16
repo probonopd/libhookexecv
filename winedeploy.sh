@@ -81,8 +81,9 @@ chmod +x AppRun
 ( cd ./usr/lib/i386-linux-gnu/ ; rm -f libpng12.so.0 ; ln -s ../../../lib/libpng12.so.0 . )
 rm -rf lib64/
 
-# Move share into usr/
-cp -R share/ usr/share/ && rm -rf share/
+# Cannot move around share since Wine has the relative path to it; hence symlinking
+# so that the desktop file etc. are in the correct place for desktop integration
+( cd usr/ ; ln -s ../share . )
 
 cp usr/share/applications/wine.desktop .
 
