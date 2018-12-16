@@ -80,7 +80,8 @@ chmod +x AppRun
 However I get this error:
 
 ```
-me@host:~/Downloads/wineversion/3.5$ ./AppRun explorer.exe
+./AppRun explorer.exe
+
 ERROR: ld.so: object '/home/me/Downloads/wineversion/3.5/lib/libhookexecv.so' from LD_PRELOAD cannot be preloaded (wrong ELF class: ELFCLASS32): ignored.
 ERROR: ld.so: object '/home/me/Downloads/wineversion/3.5/lib/libhookexecv.so' from LD_PRELOAD cannot be preloaded (wrong ELF class: ELFCLASS32): ignored.
 /lib/ld-linux.so.2: could not open
