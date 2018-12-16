@@ -95,7 +95,7 @@ if [ -d "$HERE/wineprefix" ] ; then
   RO_WINEPREFIX="$HERE/wineprefix" # WINEPREFIX in the AppDir
   TMP_WINEPREFIX_OVERLAY=/tmp/QQ # Use the name of the app
   mkdir -p "$MNT_WINEPREFIX" "$TMP_WINEPREFIX_OVERLAY"
-  "$WINELDLIBRARY" "$HERE/usr/bin/unionfs-fuse" -o use_ino,nonempty,uid=$UID -ocow "$TMP_WINEPREFIX_OVERLAY"=RW:"$RO_WINEPREFIX"=RO "$MNT_WINEPREFIX" || exit 1
+  "$WINELDLIBRARY" "$HERE/usr/bin/unionfs-fuse" -o use_ino,uid=$UID -ocow "$TMP_WINEPREFIX_OVERLAY"=RW:"$RO_WINEPREFIX"=RO "$MNT_WINEPREFIX" || exit 1
   export WINEPREFIX="$MNT_WINEPREFIX"
   echo "Using $HERE/wineprefix mounted to $WINEPREFIX"
   trap atexit EXIT
