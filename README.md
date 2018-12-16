@@ -19,7 +19,7 @@ We want to make a fully portable of 32-bit Wine that can run on any Linux system
 ./bin/widl: ELF 32-bit LSB executable, Intel 80386, version 1 (SYSV), dynamically linked, interpreter /lib/ld-linux.so.2, for GNU/Linux 2.6.26, BuildID[sha1]=14b9c572d68809513bd0c43fb61073be71ca7fd1, stripped
 ```
 
-It would be best if we could rewrite the ELF executables to not search for `/lib/ld-linux.so.2` on the system (which is not there on most 64-bit systems), but in a custom location, e.g., in `$ORIGIN/../lib` which should resolve, in our example, to `./lib/ld-linux.so.2`. Unfortunately this does not seem to work. __Why?__
+It would be best if we could rewrite the ELF executables to not search for `/lib/ld-linux.so.2` on the system (which is not there on most 64-bit systems), but in a custom location, e.g., in `$ORIGIN/../lib` which should resolve, in our example, to `./lib/ld-linux.so.2`. Unfortunately this does not work. [__Why?__](https://stackoverflow.com/a/48456169)
 
 ## Complication
 
@@ -32,7 +32,7 @@ export LD_LIBRARY_PATH=... ./lib/ld-linux.so.2 ./bin/wine
 However, there are two issues with this:
 
 - Wine launches subprocesses, which in turn would try to use `./lib/ld-linux.so.2` again
-- `./lib/ld-linux.so.2` may still try to load libraries and [other stuff](https://packages.debian.org/jessie/i386/libc6/filelist) from the system `/lib`, which we must avoid. Ideally we could patch `./lib/ld-linux.so.2` to load its stuff from `$ORIGIN/i386-linux-gnu/`. Unfortunately there seems to be no way to achieve this. __Why?__
+- `./lib/ld-linux.so.2` may still try to load libraries and [other stuff](https://packages.debian.org/jessie/i386/libc6/filelist) from the system `/lib`, which we must avoid. Ideally we could patch `./lib/ld-linux.so.2` to load its stuff from `$ORIGIN/i386-linux-gnu/`. Unfortunately there seems to be no way to achieve this. __Why?__ However there seems to be a workaround: A custom loader called [rtldi](http://bitwagon.com/rtldi/rtldi.html).
 
 ## Solution
 
