@@ -39,6 +39,7 @@ However, there are two issues with this:
 ```
 HERE="$(dirname "$(readlink -f "${0}")")"
 export LDLINUX="$HERE/lib/ld-linux.so.2" # Patched to not load stuff from /lib
+export WINELDLIBRARY="$LDLINUX" # libhookexecv uses this variable to patch wineloader on the fly
 export LD_PRELOAD="$HERE/lib/libhookexecv.so"
 "$LDLINUX" --inhibit-cache --library-path $(readlink -f "$HERE/lib/"):$(readlink -f "$HERE/lib/i386-linux-gnu"):$LD_LIBRARY_PATH "$HERE/bin/wine" "$@"
 ```
