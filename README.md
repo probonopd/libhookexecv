@@ -77,6 +77,8 @@ chmod +x AppRun
 ./AppRun explorer.exe
 ```
 
+## FIXME
+
 However I get this error:
 
 ```
