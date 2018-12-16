@@ -136,11 +136,11 @@ export WINEPREFIX=$(readlink -f ./Wine.AppDir/wineprefix)
 ./Wine*.AppImage wineboot
 
 echo "disable" > "$WINEPREFIX/.update-timestamp" # Stop Wine from updating $WINEPREFIX automatically from time to time
-( cd wineprefix/drive_c/ ; rm -rf users ; ln -s /home users ) # Do not hardcode username in wineprefix
-ls -lh wineprefix/
+( cd "$WINEPREFIX/drive_c/" ; rm -rf users ; ln -s /home users ) # Do not hardcode username in wineprefix
+ls -lh "$WINEPREFIX/"
 
 wget -c "https://notepad-plus-plus.org/repository/7.x/7.6.1/npp.7.6.1.bin.minimalist.7z"
-7z x -owineprefix/drive_c/windows/system32/ npp*.7z # system32 is on Windows $PATH equivalent
+7z x -o"$WINEPREFIX/drive_c/windows/system32/" npp*.7z # system32 is on Windows $PATH equivalent
 
 # Perhaps we can make this generic so as to convert all from portableapps.com in the same way
 # wget -c "http://download3.portableapps.com/portableapps/Notepad++Portable/NotepadPlusPlusPortable_7.6.paf.exe"
