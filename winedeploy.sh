@@ -3,6 +3,7 @@
 # Be verbose
 set -x
 
+sudo add-apt-repository "deb http://archive.ubuntu.com/ubuntu $(lsb_release -sc) universe"
 sudo dpkg --add-architecture i386
 sudo apt-get update
 sudo apt install p7zip-full # For Notepad++
