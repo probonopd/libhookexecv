@@ -51,7 +51,7 @@ WINEPREFIX=$(readlink -f wineprefix) ./Wine_Windows_Program_Loader-3.5-x86_64.Ap
 ## Slimming
 
 ```
-( sudo strace -f ./Downloads/Wine*.AppImage notepad 2>&1 | grep -v ENOENT | grep " open" | grep mount_ | cut -d '"' -f 2 > list ) &
+( sudo strace -f ./Downloads/Notepad*.AppImage notepad 2>&1 | grep -v ENOENT |  grep '("/tmp/.mount_' | cut -d '"' -f 2 > list ) &
 PID=$!
 sleep 10
 kill -9 $PID
@@ -76,5 +76,6 @@ cat keeplistclean
 
 cat keeplistclean | sort -r | uniq > sorted
 
+rm slimmed
 bash -ex sorted
 ```
