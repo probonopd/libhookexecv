@@ -82,6 +82,24 @@ if [ -z "$@" ] ; then
   EXPLORER="explorer.exe"
 fi
 
+# Load bundled WINEPREFIX if existing
+
+MNT_WINEPREFIX="$HOME/.QQ.unionfs" # Use the name of the app
+atexit()
+{
+  killall "$WINELDLIBRARY" && sleep 0.1 && rm -r "$MNT_WINEPREFIX"
+}
+
+if [ -d "$HERE/wineprefix" ] ; then
+  RO_WINEPREFIX="$HERE/wineprefix" # WINEPREFIX in the AppDir
+  TMP_WINEPREFIX_OVERLAY=/tmp/QQ # Use the name of the app
+  mkdir -p "$MNT_WINEPREFIX" "$TMP_WINEPREFIX_OVERLAY"
+  "$WINELDLIBRARY" "$HERE/usr/bin/unionfs-fuse" -o use_ino,nonempty,uid=$UID -ocow "$TMP_WINEPREFIX_OVERLAY"=RW:"$RO_WINEPREFIX"=RO "$MNT_WINEPREFIX" || exit 1
+  export WINEPREFIX="$MNT_WINEPREFIX"
+  echo "Using $HERE/wineprefix mounted to $WINEPREFIX"
+  trap atexit EXIT
+fi
+
 LD_PRELOAD="$HERE/lib/libhookexecv.so" "$WINELDLIBRARY" "$HERE/bin/wine" "$@" "$EXPLORER" | cat
 EOF
 chmod +x AppRun
@@ -113,7 +131,8 @@ ARCH=x86_64 ./appimagetool-x86_64.AppImage -g ./Wine.AppDir
 #
 
 export WINEDLLOVERRIDES="mscoree,mshtml="
-export WINEPREFIX=$(readlink -f wineprefix)
+mkdir -p ./Wine.AppDir/wineprefix
+export WINEPREFIX=$(readlink -f ./Wine.AppDir/wineprefix)
 ./Wine*.AppImage wineboot
 
 echo "disable" > "$WINEPREFIX/.update-timestamp" # Stop Wine from updating $WINEPREFIX automatically from time to time
@@ -128,4 +147,6 @@ wget -c "https://notepad-plus-plus.org/repository/7.x/7.6.1/npp.7.6.1.bin.minima
 # 7z x -y -otmp NotepadPlusPlusPortable_7.6.paf.exe 
 # mv tmp/* "$WINEPREFIX/drive_c/windows/system32/"
 
-tar cfvz wineprefix.tar.gz wineprefix/
+sed -i -e 's|^Name=.*|Name=Notepad++|g' ./Wine.AppDir/*.desktop
+
+ARCH=x86_64 ./appimagetool-x86_64.AppImage -g ./Wine.AppDir
