@@ -47,10 +47,4 @@ wget -c https://github.com/probonopd/libhookexecv/releases/download/continuous/w
 tar xf wineprefix.tar.gz
 
 WINEPREFIX=$(readlink -f wineprefix) ./Wine_Windows_Program_Loader-3.5-x86_64.AppImage notepad++
-
-# Error. Why?
-
-WINEPREFIX=$(readlink -f wineprefix) ./Wine_Windows_Program_Loader-3.5-x86_64.AppImage --appimage-extract-and-run notepad++
-
-# Runs. Why?
 ```
