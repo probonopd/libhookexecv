@@ -39,6 +39,7 @@ However, there are two issues with this:
 ```
 # For testing, disable system /lib/ld-linux.so.2
 sudo mv /lib/ld-linux.so.2 /lib/ld-linux.so.2.disabled || true
+sudo mv /usr/lib32 /usr/lib32.disabled || true
 
 # Get Wine
 wget https://www.playonlinux.com/wine/binaries/linux-x86/PlayOnLinux-wine-3.5-linux-x86.pol
