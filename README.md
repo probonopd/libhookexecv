@@ -37,6 +37,18 @@ However, there are two issues with this:
 ## Solution
 
 ```
+# Get suitable old ld-linux.so and the stuff that comes with it
+wget http://ftp.us.debian.org/debian/pool/main/g/glibc/libc6_2.19-18+deb8u10_i386.deb
+dpkg -x libc6_2.19-18+deb8u10_i386.deb  .
+
+# Get libhookexecv.so
+wget -c https://github.com/probonopd/libhookexecv/releases/download/continuous/libhookexecv.so -O lib/libhookexecv.so 
+```
+
+Then run like this:
+
+```
+#!/bin/bash
 HERE="$(dirname "$(readlink -f "${0}")")"
 export LDLINUX="$HERE/lib/ld-linux.so.2" # Patched to not load stuff from /lib
 export WINELDLIBRARY="$LDLINUX" # libhookexecv uses this variable to patch wineloader on the fly
