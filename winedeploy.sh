@@ -148,7 +148,8 @@ wget -c "https://notepad-plus-plus.org/repository/7.x/7.6.1/npp.7.6.1.bin.minima
 # 7z x -y -otmp NotepadPlusPlusPortable_7.6.paf.exe 
 # mv tmp/* "$WINEPREFIX/drive_c/windows/system32/"
 
-sed -i -e 's|^Name=.*|Name=Notepad++|g' ./Wine.AppDir/*.desktop
+sed -i -e 's|^Name=.*|Name=NotepadPlusPlus|g' ./Wine.AppDir/*.desktop
+sed -i -e 's|explorer.exe|notepad++.exe|g' ./Wine.AppDir/AppRun
 
 ARCH=x86_64 ./appimagetool-x86_64.AppImage -g ./Wine.AppDir
 
