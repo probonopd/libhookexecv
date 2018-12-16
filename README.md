@@ -50,6 +50,8 @@ WINEPREFIX=$(readlink -f wineprefix) ./Wine_Windows_Program_Loader-3.5-x86_64.Ap
 ```
 ## Slimming
 
+__Not quite working yet. Should probably delete what we don't want instead.__
+
 ```
 ( sudo strace -f ./Downloads/Notepad*.AppImage notepad 2>&1 | grep -v ENOENT |  grep '("/tmp/.mount_' | cut -d '"' -f 2 > list ) &
 PID=$!
