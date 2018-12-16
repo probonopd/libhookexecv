@@ -3,7 +3,7 @@
 # Be verbose
 set -x
 
-sudo add-apt-repository "deb http://archive.ubuntu.com/ubuntu $(lsb_release -sc) universe"
+# sudo add-apt-repository "deb http://archive.ubuntu.com/ubuntu $(lsb_release -sc) universe"
 sudo dpkg --add-architecture i386
 sudo apt-get update
 sudo apt install p7zip-full # For Notepad++
@@ -22,7 +22,7 @@ URLS=$(apt-get --allow-unauthenticated -o Apt::Get::AllowUnauthenticated=true \
 -o APT::Get::List-Cleanup=0 -o APT::Get::AllowUnauthenticated=1 \
 -o Debug::pkgProblemResolver=true -o Debug::pkgDepCache::AutoInstall=true \
 -o APT::Install-Recommends=0 -o APT::Install-Suggests=0 -y \
-install --print-uris wine:i386 unionfs-fuse:i386 2>&1 | grep "_i386" | grep -v "wine" | cut -d "'" -f 2 )
+install --print-uris wine:i386 unionfs-fuse:i386 | grep "_i386" | grep -v "wine" | cut -d "'" -f 2 )
 
 wget -c $URLS
 
