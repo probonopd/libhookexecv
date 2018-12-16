@@ -21,9 +21,12 @@ URLS=$(apt-get --allow-unauthenticated -o Apt::Get::AllowUnauthenticated=true \
 -o APT::Get::List-Cleanup=0 -o APT::Get::AllowUnauthenticated=1 \
 -o Debug::pkgProblemResolver=true -o Debug::pkgDepCache::AutoInstall=true \
 -o APT::Install-Recommends=0 -o APT::Install-Suggests=0 -y \
-install --print-uris wine:i386 2>&1 | grep "_i386" | grep -v "wine" | cut -d "'" -f 2 )
+install --print-uris wine:i386 unionfs-fuse:i386 2>&1 | grep "_i386" | grep -v "wine" | cut -d "'" -f 2 )
 
 wget -c $URLS
+
+# Get unionfs-fuse to make shared read-only wineprefix usable for every user
+# apt download unionfs-fuse
 
 # Get suitable old ld-linux.so and the stuff that comes with it
 # apt download libc6:i386 # It is already included above
@@ -75,7 +78,7 @@ export WINEDEBUG=-all # Do not print Wine debug messages
 
 # Load Explorer if no arguments given
 EXPLORER=""
-if [ -z "$@" ] ; then 
+if [ -z "$@" ] ; then
   EXPLORER="explorer.exe"
 fi
 
@@ -112,6 +115,8 @@ ARCH=x86_64 ./appimagetool-x86_64.AppImage -g ./Wine.AppDir
 export WINEDLLOVERRIDES="mscoree,mshtml="
 export WINEPREFIX=$(readlink -f wineprefix)
 ./Wine*.AppImage wineboot
+
+echo "disable" > "$WINEPREFIX/.update-timestamp" # Stop Wine from updating $WINEPREFIX automatically from time to time
 ( cd wineprefix/drive_c/ ; rm -rf users ; ln -s /home users ) # Do not hardcode username in wineprefix
 ls -lh wineprefix/
 
