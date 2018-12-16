@@ -48,3 +48,33 @@ tar xf wineprefix.tar.gz
 
 WINEPREFIX=$(readlink -f wineprefix) ./Wine_Windows_Program_Loader-3.5-x86_64.AppImage notepad++
 ```
+## Slimming
+
+```
+( sudo strace -f ./Downloads/Wine*.AppImage notepad 2>&1 | grep -v ENOENT | grep " open" | grep mount_ | cut -d '"' -f 2 > list ) &
+PID=$!
+sleep 10
+kill -9 $PID
+
+cat list | sort | uniq | sed -e 's|/tmp/.mount_............|squashfs-root|g' > keeplist
+
+rm keeplistclean || true
+while IFS='' read -r line || [[ -n "$line" ]]; do
+  if [ -h "$line" ] ; then
+    FROM=$(file "$line" | cut -d " " -f 1 | cut -d ":" -f 1)
+    TO=$(file "$line" | cut -d " " -f 5)
+    echo mkdir -p $(dirname "slimmed/$line") >> keeplistclean
+    echo "( cd slimmed/$(dirname $FROM) ; ln -s $(basename $FROM) $TO )" >> keeplistclean
+  elif [ -f "$line" ] ; then 
+    echo mkdir -p slimmed/$(dirname "$line") >> keeplistclean
+    echo cp $(readlink -f "$line") slimmed/$line >> keeplistclean
+  elif [ -d "$line" ] ; then 
+    echo mkdir -p $(readlink -f "slimmed/$line") >> keeplistclean
+  fi
+done < keeplist
+cat keeplistclean
+
+cat keeplistclean | sort -r | uniq > sorted
+
+bash -ex sorted
+```
