@@ -100,3 +100,12 @@ cd ..
 wget -c "https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-x86_64.AppImage"
 chmod +x ./appimagetool-x86_64.AppImage
 ARCH=x86_64 ./appimagetool-x86_64.AppImage -g ./Wine.AppDir
+
+#
+# Wine AppImage DONE. Now making a wineprefix
+#
+
+export WINEDLLOVERRIDES="mscoree,mshtml="
+export WINEPREFIX=$(readlink -f wineprefix)
+./Wine*.AppImage wineboot
+ls -lh wineprefix/
