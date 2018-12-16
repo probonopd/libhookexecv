@@ -5,6 +5,7 @@ set -x
 
 sudo dpkg --add-architecture i386
 sudo apt-get update
+sudo apt install p7zip-full # For Notepad++
 
 # Get Wine
 wget -c https://www.playonlinux.com/wine/binaries/linux-x86/PlayOnLinux-wine-3.5-linux-x86.pol
@@ -102,10 +103,15 @@ chmod +x ./appimagetool-x86_64.AppImage
 ARCH=x86_64 ./appimagetool-x86_64.AppImage -g ./Wine.AppDir
 
 #
-# Wine AppImage DONE. Now making a wineprefix
+# Wine AppImage DONE. Now making a wineprefix for Notepad++
 #
 
 export WINEDLLOVERRIDES="mscoree,mshtml="
 export WINEPREFIX=$(readlink -f wineprefix)
 ./Wine*.AppImage wineboot
 ls -lh wineprefix/
+
+wget -c "https://notepad-plus-plus.org/repository/7.x/7.6.1/npp.7.6.1.bin.minimalist.7z"
+7z x -owineprefix/drive_c/windows/system32/ npp*.7z # system32 is on Windows $PATH equivalent
+
+tar xfvz wineprefix.tar.gz wineprefix/
