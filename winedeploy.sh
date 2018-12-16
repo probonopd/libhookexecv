@@ -115,11 +115,12 @@ export WINEPREFIX=$(readlink -f wineprefix)
 ( cd wineprefix/drive_c/ ; rm -rf users ; ln -s /home users ) # Do not hardcode username in wineprefix
 ls -lh wineprefix/
 
-# wget -c "https://notepad-plus-plus.org/repository/7.x/7.6.1/npp.7.6.1.bin.minimalist.7z"
-# 7z x -owineprefix/drive_c/windows/system32/ npp*.7z # system32 is on Windows $PATH equivalent
+wget -c "https://notepad-plus-plus.org/repository/7.x/7.6.1/npp.7.6.1.bin.minimalist.7z"
+7z x -owineprefix/drive_c/windows/system32/ npp*.7z # system32 is on Windows $PATH equivalent
 
-wget -c "http://download3.portableapps.com/portableapps/Notepad++Portable/NotepadPlusPlusPortable_7.6.paf.exe"
-7z e -y -otmp NotepadPlusPlusPortable_7.6.paf.exe 
-mv tmp/* "$WINEPREFIX/drive_c/windows/system32/"
+# Perhaps we can make this generic so as to convert all from portableapps.com in the same way
+# wget -c "http://download3.portableapps.com/portableapps/Notepad++Portable/NotepadPlusPlusPortable_7.6.paf.exe"
+# 7z x -y -otmp NotepadPlusPlusPortable_7.6.paf.exe 
+# mv tmp/* "$WINEPREFIX/drive_c/windows/system32/"
 
 tar cfvz wineprefix.tar.gz wineprefix/
