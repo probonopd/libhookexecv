@@ -87,7 +87,6 @@ rm -rf lib64/
 
 cp usr/share/applications/wine.desktop .
 
-cp ./usr/share/share/applications/wine.desktop .
 touch wine.svg # FIXME
 
 cd ..
