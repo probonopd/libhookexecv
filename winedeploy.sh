@@ -70,8 +70,8 @@ export LD_LIBRARY_PATH="$HERE/usr/lib/i386-linux-gnu/alsa-lib":$LD_LIBRARY_PATH
 # LD
 export WINELDLIBRARY="$HERE/lib/ld-linux.so.2"
 
-# Do not ask to install Mono or Gecko
-export WINEDLLOVERRIDES="mscoree,mshtml="
+export WINEDLLOVERRIDES="mscoree,mshtml=" # Do not ask to install Mono or Gecko
+export WINEDEBUG=-all # Do not print Wine debug messages
 
 # Load Explorer if no arguments given
 EXPLORER=""
