@@ -125,9 +125,13 @@ export VERSION=$(strings ./lib/libwine.so.1 | grep wine-[\.0-9] | cut -d "-" -f 
 cd ..
 
 export WINEDLLOVERRIDES="mscoree,mshtml="
-mkdir -p ./Wine.AppDir/wineprefix
-export WINEPREFIX=$(readlink -f ./Wine.AppDir/wineprefix)
+mkdir -p ./Wine.AppDir/wineprefixnew
+export WINEPREFIX=$(readlink -f ./Wine.AppDir/wineprefixnew)
 ./Wine.AppDir/AppRun wineboot
+echo "disable" > "$WINEPREFIX/.update-timestamp" # Stop Wine from updating $WINEPREFIX automatically from time to time
+( cd "$WINEPREFIX/drive_c/" ; rm -rf users ; ln -s /home users ) || true # Do not hardcode username in wineprefix
+ls -lh "$WINEPREFIX/"
+mv ./Wine.AppDir/wineprefixnew ./Wine.AppDir/wineprefix && export WINEPREFIX=$(readlink -f ./Wine.AppDir/wineprefix)
 
 wget -c "https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-x86_64.AppImage"
 chmod +x ./appimagetool-x86_64.AppImage
@@ -136,10 +140,6 @@ ARCH=x86_64 ./appimagetool-x86_64.AppImage -g ./Wine.AppDir
 #
 # Wine AppImage DONE. Now making a wineprefix for Notepad++
 #
-
-echo "disable" > "$WINEPREFIX/.update-timestamp" # Stop Wine from updating $WINEPREFIX automatically from time to time
-( cd "$WINEPREFIX/drive_c/" ; rm -rf users ; ln -s /home users ) # Do not hardcode username in wineprefix
-ls -lh "$WINEPREFIX/"
 
 wget -c "https://notepad-plus-plus.org/repository/7.x/7.6.1/npp.7.6.1.bin.minimalist.7z"
 7z x -o"$WINEPREFIX/drive_c/windows/system32/" npp*.7z # system32 is on Windows $PATH equivalent
