@@ -11,7 +11,7 @@ script:
  
 after_success:
   - wget -c https://github.com/probonopd/uploadtool/raw/master/upload.sh
-  - bash ./upload.sh libhookexecv.so ./Wine*.AppImage* wineprefix.tar.gz
+  - bash ./upload.sh libhookexecv.so ./Wine*.AppImage* ./Notepad++*.AppImage* wineprefix.tar.gz
 
 branches:
   except:
