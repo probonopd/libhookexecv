@@ -83,6 +83,7 @@ rm -rf lib64/
 
 # Cannot move around share since Wine has the relative path to it; hence symlinking
 # so that the desktop file etc. are in the correct place for desktop integration
+cp -r usr/share share/ && rm -rf usr/share
 ( cd usr/ ; ln -s ../share . )
 
 cp usr/share/applications/wine.desktop .
