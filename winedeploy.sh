@@ -39,6 +39,9 @@ find ../.. -name '*.deb' -exec dpkg -x {} . \;
 sed -i -e 's|/usr|/xxx|g' lib/ld-linux.so.2
 sed -i -e 's|/usr/lib|/ooo/ooo|g' lib/ld-linux.so.2
 
+# Remove duplicate (why is it there?)
+rm -f lib/i386-linux-gnu/ld-*.so
+
 # Get libhookexecv.so
 wget -c https://github.com/probonopd/libhookexecv/releases/download/continuous/libhookexecv.so -O lib/libhookexecv.so
 
