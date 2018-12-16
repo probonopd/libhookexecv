@@ -32,7 +32,7 @@ export LD_LIBRARY_PATH=... ./lib/ld-linux.so.2 ./bin/wine
 However, there are two issues with this:
 
 - Wine launches subprocesses, which in turn would try to use `./lib/ld-linux.so.2` again
-- `./lib/ld-linux.so.2` may still try to load libraries and other stuff from the system `/lib`, which we must avoid 
+- `./lib/ld-linux.so.2` may still try to load libraries and [other stuff](https://packages.debian.org/jessie/i386/libc6/filelist) from the system `/lib`, which we must avoid. Ideally we could patch `./lib/ld-linux.so.2` to load its stuff from `$ORIGIN/i386-linux-gnu/`. Unfortunately there seems to be no way to achieve this. __Why?__
 
 ## Solution
 
