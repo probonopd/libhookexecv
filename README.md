@@ -68,7 +68,7 @@ cat > AppRun <<\EOF
 HERE="$(dirname "$(readlink -f "${0}")")"
 export LDLINUX="$HERE/lib/ld-linux.so.2" # Patched to not load stuff from /lib
 export WINELDLIBRARY="$LDLINUX" # libhookexecv uses the WINELDLIBRARY variable to patch wineloader on the fly
-export LD_PRELOAD="$HERE/lib/libhookexecv.so"
+export LD_PRELOAD=$(readlink -f "$HERE/lib/libhookexecv.so")
 export LD_LIBRARY_PATH=$(readlink -f "$HERE/lib/"):$(readlink -f "$HERE/lib/i386-linux-gnu"):$LD_LIBRARY_PATH
 "$LDLINUX" --inhibit-cache "$HERE/bin/wine" "$@"
 EOF
