@@ -47,7 +47,7 @@ sed -i -e 's|/usr/lib|/ooo/ooo|g' lib/ld-linux.so.2
 rm -f lib/i386-linux-gnu/ld-*.so
 
 # Get libhookexecv.so
-wget -c https://github.com/probonopd/libhookexecv/releases/download/continuous/libhookexecv.so -O lib/libhookexecv.so
+cp ../libhookexecv.so lib/libhookexecv.so
 
 # Get patched wine-preload
 wget -c https://github.com/Hackerl/Wine_Appimage/releases/download/testing/wine-preloader-patched.zip
