@@ -7,6 +7,7 @@ script:
  - sudo apt-get -y install gcc-multilib
  - gcc -shared -fPIC -m32 -ldl libhookexecv.c -o libhookexecv.so
  - strip libhookexecv.so
+ - bash -ex winedeploy.sh
  
 after_success:
   - wget -c https://github.com/probonopd/uploadtool/raw/master/upload.sh
