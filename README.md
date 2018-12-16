@@ -50,6 +50,9 @@ dpkg -x libc6_2.19-18+deb8u10_i386.deb  .
 sed -i -e 's|/usr|/xxx|g' lib/ld-linux.so.2
 sed -i -e 's|/lib|/XXX|g' lib/ld-linux.so.2
 
+# Remove duplicate (why is it there?)
+rm -f lib/i386-linux-gnu/ld-*.so
+
 # Get libhookexecv.so
 wget -c https://github.com/probonopd/libhookexecv/releases/download/continuous/libhookexecv.so -O lib/libhookexecv.so 
 ```
@@ -57,10 +60,25 @@ wget -c https://github.com/probonopd/libhookexecv/releases/download/continuous/l
 Then run like this:
 
 ```
+cat > AppRun <<\EOF
 #!/bin/bash
 HERE="$(dirname "$(readlink -f "${0}")")"
 export LDLINUX="$HERE/lib/ld-linux.so.2" # Patched to not load stuff from /lib
-export WINELDLIBRARY="$LDLINUX" # libhookexecv uses this variable to patch wineloader on the fly
+export WINELDLIBRARY="$LDLINUX" # libhookexecv uses the WINELDLIBRARY variable to patch wineloader on the fly
 export LD_PRELOAD="$HERE/lib/libhookexecv.so"
-"$LDLINUX" --inhibit-cache --library-path $(readlink -f "$HERE/lib/"):$(readlink -f "$HERE/lib/i386-linux-gnu"):$LD_LIBRARY_PATH "$HERE/bin/wine" "$@"
+export LD_LIBRARY_PATH=$(readlink -f "$HERE/lib/"):$(readlink -f "$HERE/lib/i386-linux-gnu"):$LD_LIBRARY_PATH
+"$LDLINUX" --inhibit-cache "$HERE/bin/wine" "$@"
+EOF
+chmod +x AppRun
+
+./AppRun explorer.exe
+```
+
+However I get this error:
+
+```
+me@host:~/Downloads/wineversion/3.5$ ./AppRun explorer.exe
+ERROR: ld.so: object '/home/me/Downloads/wineversion/3.5/lib/libhookexecv.so' from LD_PRELOAD cannot be preloaded (wrong ELF class: ELFCLASS32): ignored.
+ERROR: ld.so: object '/home/me/Downloads/wineversion/3.5/lib/libhookexecv.so' from LD_PRELOAD cannot be preloaded (wrong ELF class: ELFCLASS32): ignored.
+/lib/ld-linux.so.2: could not open
 ```
