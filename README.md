@@ -26,13 +26,13 @@ It would be best if we could rewrite the ELF executables to not search for `/lib
 It is possible to use a custom loader by invoking ELF binaries like this:
 
 ```
-export LD_LIBRARY_PATH=... ./lib/ld-linux.so.2 ./bin/wine
+./lib/ld-linux.so.2 --library-path $(readlink -f ./lib/):$LD_LIBRARY_PATH ./bin/wine
 ```
 
 However, there are two issues with this:
 
 - Wine launches subprocesses, which in turn would try to use `./lib/ld-linux.so.2` again
-- `./lib/ld-linux.so.2` may still try to load libraries and [other stuff](https://packages.debian.org/jessie/i386/libc6/filelist) from the system `/lib`, which we must avoid. Ideally we could patch `./lib/ld-linux.so.2` to load its stuff from `$ORIGIN/i386-linux-gnu/`. Unfortunately there seems to be no way to achieve this. __Why?__ However there seems to be a workaround: A custom loader called [rtldi](http://bitwagon.com/rtldi/rtldi.html).
+- `./lib/ld-linux.so.2` may still try to load libraries and [other stuff](https://packages.debian.org/jessie/i386/libc6/filelist) from the system `/lib`, which we must avoid. Ideally we could patch `./lib/ld-linux.so.2` to load its stuff from `$ORIGIN/i386-linux-gnu/`. Unfortunately there seems to be no way to achieve this apart from binary-patching `ld-linux.so.2`- __why?__
 
 ## Solution
 
