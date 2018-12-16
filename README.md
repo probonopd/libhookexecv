@@ -39,7 +39,7 @@ However, there are two issues with this:
 ```
 # Get Wine
 wget https://www.playonlinux.com/wine/binaries/linux-x86/PlayOnLinux-wine-3.5-linux-x86.pol
-tar xfz PlayOnLinux-wine-*-linux-x86.pol
+tar xfvj PlayOnLinux-wine-*-linux-x86.pol wineversion/
 cd wineversion/*/
 
 # Get suitable old ld-linux.so and the stuff that comes with it
