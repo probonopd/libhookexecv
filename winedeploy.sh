@@ -90,6 +90,8 @@ cp usr/share/applications/wine.desktop .
 
 touch wine.svg # FIXME
 
+export VERSION=$(strings ./lib/libwine.so.1 | grep wine-[\.0-9] | cut -d "-" -f 2)
+
 cd ..
 
 wget -c "https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-x86_64.AppImage"
