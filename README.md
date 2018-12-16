@@ -1,5 +1,5 @@
 # libhookexecv
-Hook Wine execv syscall to use special ld.so in order to make it fully relocateable
+Hook Wine execv syscall to use special ld.so in order to make it fully relocateable- __WORK IN PROGRESS__
 
 ## Problem statement
 
