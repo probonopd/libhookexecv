@@ -86,3 +86,23 @@ ERROR: ld.so: object '/home/me/Downloads/wineversion/3.5/lib/libhookexecv.so' fr
 ERROR: ld.so: object '/home/me/Downloads/wineversion/3.5/lib/libhookexecv.so' from LD_PRELOAD cannot be preloaded (wrong ELF class: ELFCLASS32): ignored.
 /lib/ld-linux.so.2: could not open
 ```
+
+For testing, we patch `/lib/ld-linux.so.2` and replace it with a relative path.
+
+```
+( cd lib/ ; ln -s ld-linux.so.2 ld-linux.so )
+find bin/ -executable -type f -exec sed -i -e 's|/lib/ld-linux.so.2|.//lib/ld-linux.so|g' {} \;
+```
+
+However this does not work because Wine does `chdir()`, so the relative path does not help
+
+```
+strace -f ./AppRun explorer 2>&1 | grep " chdir"
+[pid 25152] chdir("/home/me/.wine")     = 0
+[pid 25152] chdir("/tmp/.wine-999/server-15-be051") = 0
+[pid 25154] chdir("/home/me/.wine")     = 0
+[pid 25154] chdir("/tmp/.wine-999/server-15-be051") = 0
+[pid 25157] chdir("/home/me/.wine/dosdevices/z:/home/me/new/wineversion/3.5") = 0
+[pid 25159] chdir("/home/me/.wine/dosdevices/c:/windows") = 0
+[pid 25161] chdir("/home/me/.wine/dosdevices/c:/windows/system32") = 0
+```
