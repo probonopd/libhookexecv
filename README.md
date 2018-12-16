@@ -37,3 +37,17 @@ However, there are two issues with this:
 ## Solution
 
 See [winedeploy.sh](winedeploy.sh).
+
+## Testing
+
+```
+tar xf wineprefix.tar.gz 
+WINEPREFIX=$(readlink -f wineprefix) ./Wine_Windows_Program_Loader-3.5-x86_64.AppImage notepad++
+
+# Error. Why?
+
+./Wine_Windows_Program_Loader-3.5-x86_64.AppImage --appimage-extract
+WINEPREFIX=$(readlink -f wineprefix) ./squashfs-root/AppRun notepad++
+
+# Runs. Why?
+```
