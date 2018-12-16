@@ -41,13 +41,16 @@ See [winedeploy.sh](winedeploy.sh).
 ## Testing
 
 ```
-tar xf wineprefix.tar.gz 
+wget -c https://github.com/probonopd/libhookexecv/releases/download/continuous/Wine_Windows_Program_Loader-3.5-x86_64.AppImage
+chmod +x Wine*.AppImage
+wget -c https://github.com/probonopd/libhookexecv/releases/download/continuous/wineprefix.tar.gz
+tar xf wineprefix.tar.gz
+
 WINEPREFIX=$(readlink -f wineprefix) ./Wine_Windows_Program_Loader-3.5-x86_64.AppImage notepad++
 
 # Error. Why?
 
-./Wine_Windows_Program_Loader-3.5-x86_64.AppImage --appimage-extract
-WINEPREFIX=$(readlink -f wineprefix) ./squashfs-root/AppRun notepad++
+WINEPREFIX=$(readlink -f wineprefix) ./Wine_Windows_Program_Loader-3.5-x86_64.AppImage --appimage-extract-and-run notepad++
 
 # Runs. Why?
 ```
