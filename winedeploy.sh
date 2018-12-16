@@ -151,3 +151,5 @@ wget -c "https://notepad-plus-plus.org/repository/7.x/7.6.1/npp.7.6.1.bin.minima
 sed -i -e 's|^Name=.*|Name=Notepad++|g' ./Wine.AppDir/*.desktop
 
 ARCH=x86_64 ./appimagetool-x86_64.AppImage -g ./Wine.AppDir
+
+( cd ./Wine.AppDir ; tar cfvz ../wineprefix.tar.gz wineprefix/ )
