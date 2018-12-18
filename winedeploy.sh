@@ -87,7 +87,6 @@ if [ -d "$HERE/wineprefix" ] ; then
   RW_WINEPREFIX_OVERLAY="$HOME/.AppName" # TODO: Use the name of the app
   mkdir -p "$MNT_WINEPREFIX" "$RW_WINEPREFIX_OVERLAY"
   "$WINELDLIBRARY" "$HERE/usr/bin/unionfs-fuse" -o use_ino,uid=$UID -ocow "$RW_WINEPREFIX_OVERLAY"=RW:"$RO_WINEPREFIX"=RO "$MNT_WINEPREFIX" || exit 1
-  UNIONFS_FUSE_PID=$1
   export WINEPREFIX="$MNT_WINEPREFIX"
   echo "Using $HERE/wineprefix mounted to $WINEPREFIX"
   trap atexit EXIT
@@ -95,11 +94,15 @@ fi
 
 atexit()
 {
-  kill $UNIONFS_FUSE_PID && sleep 0.1 && rm -r "$MNT_WINEPREFIX"
+  pkill -f "$HERE/usr/bin/unionfs-fuse"
 }
 
 # LANG=C is a workaround for: "wine: loadlocale.c:129: _nl_intern_locale_data: Assertion (...) failed"; FIXME
-LANG=C LD_PRELOAD="$HERE/lib/libhookexecv.so" "$WINELDLIBRARY" "$HERE/bin/wine" "$@" "$EXPLORER" | cat
+if [ -z "$EXPLORER" ] ; then
+  LANG=C LD_PRELOAD="$HERE/lib/libhookexecv.so" "$WINELDLIBRARY" "$HERE/bin/wine" "$@" | cat
+else
+  LANG=C LD_PRELOAD="$HERE/lib/libhookexecv.so" "$WINELDLIBRARY" "$HERE/bin/wine" "$EXPLORER" | cat
+fi
 EOF
 chmod +x AppRun
 
