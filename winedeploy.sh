@@ -128,7 +128,7 @@ export WINEDLLOVERRIDES="mscoree,mshtml="
 mkdir -p ./Wine.AppDir/wineprefixnew
 export WINEPREFIX=$(readlink -f ./Wine.AppDir/wineprefixnew)
 ./Wine.AppDir/AppRun wineboot
-echo "disable" > "$WINEPREFIX/.update-timestamp" # Stop Wine from updating $WINEPREFIX automatically from time to time
+# echo "disable" > "$WINEPREFIX/.update-timestamp" # Stop Wine from updating $WINEPREFIX automatically from time to time # This leads to non-working WINEPREFIX!
 ( cd "$WINEPREFIX/drive_c/" ; rm -rf users ; ln -s /home users ) || true # Do not hardcode username in wineprefix
 ls -lh "$WINEPREFIX/"
 mv ./Wine.AppDir/wineprefixnew ./Wine.AppDir/wineprefix && export WINEPREFIX=$(readlink -f ./Wine.AppDir/wineprefix)
