@@ -79,23 +79,24 @@ if [ -z "$@" ] ; then
   EXPLORER="explorer.exe"
 fi
 
+MNT_WINEPREFIX="/tmp/.AppName.unionfs" # TODO: Use the name of the app
+
 # Load bundled WINEPREFIX if existing
-
-MNT_WINEPREFIX="$HOME/.QQ.unionfs" # Use the name of the app
-atexit()
-{
-  killall "$WINELDLIBRARY" && sleep 0.1 && rm -r "$MNT_WINEPREFIX"
-}
-
 if [ -d "$HERE/wineprefix" ] ; then
   RO_WINEPREFIX="$HERE/wineprefix" # WINEPREFIX in the AppDir
-  TMP_WINEPREFIX_OVERLAY=/tmp/QQ # Use the name of the app
-  mkdir -p "$MNT_WINEPREFIX" "$TMP_WINEPREFIX_OVERLAY"
-  "$WINELDLIBRARY" "$HERE/usr/bin/unionfs-fuse" -o use_ino,uid=$UID -ocow "$TMP_WINEPREFIX_OVERLAY"=RW:"$RO_WINEPREFIX"=RO "$MNT_WINEPREFIX" || exit 1
+  RW_WINEPREFIX_OVERLAY="$HOME/.AppName" # TODO: Use the name of the app
+  mkdir -p "$MNT_WINEPREFIX" "$RW_WINEPREFIX_OVERLAY"
+  "$WINELDLIBRARY" "$HERE/usr/bin/unionfs-fuse" -o use_ino,uid=$UID -ocow "$RW_WINEPREFIX_OVERLAY"=RW:"$RO_WINEPREFIX"=RO "$MNT_WINEPREFIX" || exit 1
+  UNIONFS_FUSE_PID=$1
   export WINEPREFIX="$MNT_WINEPREFIX"
   echo "Using $HERE/wineprefix mounted to $WINEPREFIX"
   trap atexit EXIT
 fi
+
+atexit()
+{
+  kill $UNIONFS_FUSE_PID && sleep 0.1 && rm -r "$MNT_WINEPREFIX"
+}
 
 # LANG=C is a workaround for: "wine: loadlocale.c:129: _nl_intern_locale_data: Assertion (...) failed"; FIXME
 LANG=C LD_PRELOAD="$HERE/lib/libhookexecv.so" "$WINELDLIBRARY" "$HERE/bin/wine" "$@" "$EXPLORER" | cat
