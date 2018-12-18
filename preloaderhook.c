@@ -13,7 +13,7 @@
  * Author: https://github.com/Hackerl
  * https://github.com/Hackerl/Wine_Appimage/issues/11#issuecomment-448081998
  * sudo apt-get -y install gcc-multilib
- * only for i386: gcc -m32 -static preloaderhook.c -o wine-preloader_hook
+ * only for i386: gcc -std=c99 -m32 -static preloaderhook.c -o wine-preloader_hook
  * Put the file in the /bin directory, in the same directory as the wine-preloader.
  * hook int 0x80 open syscall. use special ld.so
  * */
