@@ -1,4 +1,5 @@
-# libhookexecv
+# libhookexecv [![Build Status](https://travis-ci.com/probonopd/libhookexecv.svg?branch=master)](https://travis-ci.com/probonopd/libhookexecv)
+
 Hook Wine execv syscall to use special ld.so in order to make it fully relocateable- __WORK IN PROGRESS__
 
 ## Problem statement
