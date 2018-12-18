@@ -49,10 +49,9 @@ rm -f lib/i386-linux-gnu/ld-*.so
 # Get libhookexecv.so
 cp ../libhookexecv.so lib/libhookexecv.so
 
-# Get patched wine-preload
-wget -c https://github.com/Hackerl/Wine_Appimage/releases/download/testing/wine-preloader-patched.zip
-unzip wine-preloader-patched.zip
-mv wine-preloader bin/
+# Get wine-preloader_hook
+cp ../wine-preloader_hook bin/
+chmod +x bin/wine-preloader_hook
 
 # Clean
 rm wine-preloader-patched.zip
