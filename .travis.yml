@@ -6,7 +6,7 @@ os: linux
 script:
  - sudo apt-get -y install gcc-multilib
  - gcc -shared -fPIC -m32 -ldl libhookexecv.c -o libhookexecv.so
- - gcc -m32 -static preloaderhook.c -o wine-preloader_hook
+ - gcc -std=c99 -m32 -static preloaderhook.c -o wine-preloader_hook
  - strip libhookexecv.so wine-preloader_hook
  - bash -ex winedeploy.sh
  
