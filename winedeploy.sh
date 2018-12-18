@@ -53,9 +53,6 @@ cp ../libhookexecv.so lib/libhookexecv.so
 cp ../wine-preloader_hook bin/
 chmod +x bin/wine-preloader_hook
 
-# Clean
-rm wine-preloader-patched.zip
-
 # Write custom AppRun
 cat > AppRun <<\EOF
 #!/bin/bash
