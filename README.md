@@ -50,7 +50,7 @@ WINEPREFIX=$(readlink -f wineprefix) ./Wine_Windows_Program_Loader-3.5-x86_64.Ap
 ```
 ## Slimming
 
-__Not quite working yet. Should probably delete what we don't want instead.__
+__Not quite working yet. Should probably delete what we don't want instead, or use something like a patched http://www.mr511.de/software/trackfs-0.1.0.README to watch files as they get accessed, and copy them.__
 
 ```
 ( sudo strace -f ./Downloads/Notepad*.AppImage notepad 2>&1 | grep -v ENOENT |  grep '("/tmp/.mount_' | cut -d '"' -f 2 > list ) &
