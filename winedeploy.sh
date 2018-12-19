@@ -132,7 +132,7 @@ export WINEPREFIX=$(readlink -f ./Wine.AppDir/wineprefixnew)
 ./Wine.AppDir/AppRun wineboot
 sleep 5
 # Need to ensure that we have system.reg userdef.reg user.reg, otherwise explorer.exe will not launch
-ls "$WINEPREFIX/{system.reg,userdef.reg,user.reg}" || exit 1
+ls -lh "$WINEPREFIX"
 
 # echo "disable" > "$WINEPREFIX/.update-timestamp" # Stop Wine from updating $WINEPREFIX automatically from time to time # This leads to non-working WINEPREFIX!
 ( cd "$WINEPREFIX/drive_c/" ; rm -rf users ; ln -s /home users ) || true # Do not hardcode username in wineprefix
@@ -157,6 +157,7 @@ wget -c "https://notepad-plus-plus.org/repository/7.x/7.6.1/npp.7.6.1.bin.minima
 
 sed -i -e 's|^Name=.*|Name=NotepadPlusPlus|g' ./Wine.AppDir/*.desktop
 sed -i -e 's|winecfg|notepad++.exe|g' ./Wine.AppDir/AppRun
+ls -lh "$WINEPREFIX"
 
 ARCH=x86_64 ./appimagetool-x86_64.AppImage -g ./Wine.AppDir
 
