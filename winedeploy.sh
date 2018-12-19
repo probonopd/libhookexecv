@@ -132,7 +132,7 @@ export WINEPREFIX=$(readlink -f ./Wine.AppDir/wineprefixnew)
 ./Wine.AppDir/AppRun wineboot
 sleep 5
 # Need to ensure that we have system.reg userdef.reg user.reg, otherwise explorer.exe will not launch
-ls "$WINEPREFIX{system.reg,userdef.reg,user.reg}" || exit 1
+ls "$WINEPREFIX/{system.reg,userdef.reg,user.reg}" || exit 1
 
 # echo "disable" > "$WINEPREFIX/.update-timestamp" # Stop Wine from updating $WINEPREFIX automatically from time to time # This leads to non-working WINEPREFIX!
 ( cd "$WINEPREFIX/drive_c/" ; rm -rf users ; ln -s /home users ) || true # Do not hardcode username in wineprefix
