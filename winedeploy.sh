@@ -27,7 +27,7 @@ install --print-uris wine:i386 | grep "_i386" | grep -v "wine" | cut -d "'" -f 2
 wget -c $URLS
 
 # Get unionfs-fuse to make shared read-only wineprefix usable for every user
-apt download fuse:i386 unionfs-fuse:i386 libfuse2:i386
+apt download fuse unionfs-fuse libfuse2 # 32-bit versions seemingly do not work properly on 64-bit machines
 
 # Get suitable old ld-linux.so and the stuff that comes with it
 # apt download libc6:i386 # It is already included above
