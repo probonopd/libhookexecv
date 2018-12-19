@@ -76,7 +76,7 @@ export WINEDEBUG=-all # Do not print Wine debug messages
 # Load Explorer if no arguments given
 EXPLORER=""
 if [ -z "$@" ] ; then
-  EXPLORER="explorer.exe"
+  EXPLORER="winecfg"
 fi
 
 MNT_WINEPREFIX="/tmp/.AppName.unionfs" # TODO: Use the name of the app
