@@ -94,6 +94,7 @@ fi
 
 atexit()
 {
+  while pgrep -f "$HERE/bin/wineserver" ; do sleep 1 ; done
   pkill -f "$HERE/usr/bin/unionfs-fuse"
 }
 
