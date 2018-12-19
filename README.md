@@ -49,7 +49,7 @@ tar xf wineprefix.tar.gz
 
 WINEPREFIX=$(readlink -f wineprefix) ./Wine_Windows_Program_Loader-3.5-x86_64.AppImage notepad++
 ```
-## Slimming
+## Minimizing
 
 __Not quite working yet. Should probably delete what we don't want instead, or use something like a patched http://www.mr511.de/software/trackfs-0.1.0.README to watch files as they get accessed, and copy them.__
 
