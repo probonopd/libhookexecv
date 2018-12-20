@@ -88,7 +88,7 @@ wc -l tmp.normalized.*
 
 # Delete unwanted files
 while read p; do
-  if [ ! -z "$(grep "$p" tmp.normalized.want)" ] || [ $p ?? 'copyright' ] || [ $p ?? '.desktop' ] || [ $p ?? '.png' ] || [ $p ?? '.svg' ] ; then 
+  if [ ! -z "$(grep "$p" tmp.normalized.want)" ] || [ $p ?? 'fuse' ] || [ $p ?? 'copyright' ] || [ $p ?? '.desktop' ] || [ $p ?? '.png' ] || [ $p ?? '.svg' ] ; then 
     echo "KEEP $p"
   else
     echo rm "$p"
