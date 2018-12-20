@@ -69,9 +69,6 @@ kill -9 $PID
 
 sudo killall opensnoop
 
-echo AppRun >> tmp.sorted
-echo *.desktop >> tmp.sorted
-echo usr/bin/unionfs-fuse >> tmp.sorted
 cat keeplist | sort | uniq > tmp.sorted
 
 # Canonicalize all filenames
@@ -88,7 +85,7 @@ wc -l tmp.normalized.*
 
 # Delete unwanted files
 while read p; do
-  if [ ! -z "$(grep "$p" tmp.normalized.want)" ] || [ $p ?? 'fuse' ] || [ $p ?? 'copyright' ] || [ $p ?? '.desktop' ] || [ $p ?? '.png' ] || [ $p ?? '.svg' ] ; then 
+  if [ ! -z "$(grep "$p" tmp.normalized.want)" ] || [[ $p == '*fuse*' ]] || [[ $p == '*copyright*' ]] || [[ $p == '*.desktop' ]] || [[ $p == '*.png' ]] || [[ $p == '*.svg' ]] ; then 
     echo "KEEP $p"
   else
     echo rm "$p"
