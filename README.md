@@ -64,11 +64,11 @@ rm tmp.* || true
 
 ( sudo /usr/share/bcc/tools/opensnoop | grep squashfs | tr -s ' ' | cut -d ' ' -f 5 | sudo tee keeplist ) &
 
-./squashfs-root/AppRun &
-PID=$!
-sleep 20
-kill $PID
-sleep 5
+# Delete existing WINEPREFIX overlay
+rm -rf /home/me/.AppName/
+
+./squashfs-root/AppRun # Without existing WINEPREFIX overlay
+./squashfs-root/AppRun # With existing WINEPREFIX overlay
 
 sudo killall opensnoop
 
