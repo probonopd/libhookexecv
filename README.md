@@ -87,8 +87,9 @@ done <tmp.avail
 wc -l tmp.normalized.*
 
 # Delete unwanted files
+# Delete unwanted files
 while read p; do
-  if [ ! -z "$(grep "$p" tmp.normalized.want)" ] || [[ $p == '*fuse*' ]] || [[ $p == '*copyright*' ]] || [[ $p == '*.desktop' ]] || [[ $p == '*.png' ]] || [[ $p == '*.svg' ]] ; then 
+  if [[ $p =~ .*AppRun ]] || [[ $p =~ .*fuse.* ]] || [[ $p =~ .*copyright.* ]] || [[ $p =~ .*.desktop ]] || [[ $p =~ .*png ]] || [[ $p =~ .*svg ]] || [ ! -z "$(grep "$p" tmp.normalized.want)" ] ; then 
     echo "KEEP $p"
   else
     echo rm "$p"
