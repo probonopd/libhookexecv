@@ -51,34 +51,51 @@ WINEPREFIX=$(readlink -f wineprefix) ./Wine_Windows_Program_Loader-3.5-x86_64.Ap
 ```
 ## Minimizing
 
-__Not quite working yet. Should probably delete what we don't want instead, or use something like a patched http://www.mr511.de/software/trackfs-0.1.0.README to watch files as they get accessed, and copy them.__
+__Work in progress.__
 
 ```
-( sudo strace -f ./Downloads/Notepad*.AppImage notepad 2>&1 | grep -v ENOENT |  grep '("/tmp/.mount_' | cut -d '"' -f 2 > list ) &
+echo "deb [trusted=yes] https://repo.iovisor.org/apt/xenial xenial-nightly main" | \
+    sudo tee /etc/apt/sources.list.d/iovisor.list
+sudo apt-get update
+sudo apt-get install -y bcc-tools
+
+sudo /usr/share/bcc/tools/opensnoop | grep squashfs | cut -d '/' -f 5-99 | \
+    sudo tee keeplist
+
+./squashfs-root/AppRun &
 PID=$!
 sleep 10
 kill -9 $PID
 
-cat list | sort | uniq | sed -e 's|/tmp/.mount_............|squashfs-root|g' > keeplist
+sudo killall opensnoop
 
-rm keeplistclean || true
-while IFS='' read -r line || [[ -n "$line" ]]; do
-  if [ -h "$line" ] ; then
-    FROM=$(file "$line" | cut -d " " -f 1 | cut -d ":" -f 1)
-    TO=$(file "$line" | cut -d " " -f 5)
-    echo mkdir -p $(dirname "slimmed/$line") >> keeplistclean
-    echo "( cd slimmed/$(dirname $FROM) ; ln -s $(basename $FROM) $TO )" >> keeplistclean
-  elif [ -f "$line" ] ; then 
-    echo mkdir -p slimmed/$(dirname "$line") >> keeplistclean
-    echo cp $(readlink -f "$line") slimmed/$line >> keeplistclean
-  elif [ -d "$line" ] ; then 
-    echo mkdir -p $(readlink -f "slimmed/$line") >> keeplistclean
+echo AppRun >> tmp.sorted
+echo *.desktop >> tmp.sorted
+echo usr/bin/unionfs-fuse >> tmp.sorted
+cat keeplist | sort | uniq > tmp.sorted
+
+# Canonicalize all filenames
+while read p; do
+  readlink -f "squashfs-root/$p" >> tmp.normalized.want
+done <tmp.sorted
+
+find squashfs-root/ -type f -or -type l > tmp.avail
+while read p; do
+  readlink -f "$p" >> tmp.normalized.have
+done <tmp.avail
+
+wc -l tmp.normalized.*
+
+# Delete unwanted files
+while read p; do
+  if [ ! -z "$(grep "$p" tmp.normalized.want)" ] || [ $p ?? 'copyright' ] || [ $p ?? '.desktop' ] || [ $p ?? '.png' ] || [ $p ?? '.svg' ] ; then 
+    echo "KEEP $p"
+  else
+    echo rm "$p"
+    rm "$p"
   fi
-done < keeplist
-cat keeplistclean
+done <tmp.normalized.have
 
-cat keeplistclean | sort -r | uniq > sorted
-
-rm slimmed
-bash -ex sorted
+# Remove empty directories
+find squashfs-root/ -type d -empty -delete
 ```
