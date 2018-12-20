@@ -87,15 +87,15 @@ done <tmp.avail
 wc -l tmp.normalized.*
 
 # Delete unwanted files
-# Delete unwanted files
 while read p; do
-  if [[ $p =~ .*AppRun ]] || [[ $p =~ .*fuse.* ]] || [[ $p =~ .*copyright.* ]] || [[ $p =~ .*.desktop ]] || [[ $p =~ .*png ]] || [[ $p =~ .*svg ]] || [ ! -z "$(grep "$p" tmp.normalized.want)" ] ; then 
+  if [[ $p =~ .*AppRun ]] || [[ $p =~ .*fuse.* ]] || [[ $p =~ .*copyright ]] || [[ $p =~ .*.desktop ]] || [[ $p =~ .*png ]] || [[ $p =~ .*svg ]] || [ ! -z "$(grep "$p" tmp.normalized.want)" ] ; then 
     echo "KEEP $p"
   else
     echo rm "$p"
     rm "$p"
   fi
 done <tmp.normalized.have
+
 
 # Remove empty directories
 find squashfs-root/ -type d -empty -delete
