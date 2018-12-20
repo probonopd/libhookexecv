@@ -76,7 +76,7 @@ cat keeplist | sort | uniq > tmp.sorted
 
 # Canonicalize all filenames
 while read p; do
-  readlink -f "squashfs-root/$p" >> tmp.normalized.want
+  readlink -f "$p" >> tmp.normalized.want
 done <tmp.sorted
 
 find squashfs-root/ -type f -or -type l > tmp.avail
