@@ -73,6 +73,10 @@ export WINELDLIBRARY="$HERE/lib/ld-linux.so.2"
 export WINEDLLOVERRIDES="mscoree,mshtml=" # Do not ask to install Mono or Gecko
 export WINEDEBUG=-all # Do not print Wine debug messages
 
+# Workaround for: wine: loadlocale.c:129: _nl_intern_locale_data:
+# Assertion `cnt < (sizeof (_nl_value_type_LC_TIME) / sizeof (_nl_value_type_LC_TIME[0]))' failed.
+export LC_ALL=C LANGUAGE=C
+
 # Load Explorer if no arguments given
 EXPLORER=""
 if [ -z "$@" ] ; then
