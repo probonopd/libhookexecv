@@ -62,7 +62,7 @@ sudo apt-get install -y bcc-tools
 rm tmp.* || true
 ./Downloads/NotepadPlusPlus-3.5-x86_64.AppImage --appimage-extract 
 
-( sudo /usr/share/bcc/tools/opensnoop | grep squashfs | cut -d '/' -f 5-99 | sudo tee keeplist ) &
+( sudo /usr/share/bcc/tools/opensnoop | grep squashfs | tr -s ' ' | cut -d ' ' -f 5 | sudo tee keeplist ) &
 
 ./squashfs-root/AppRun &
 PID=$!
