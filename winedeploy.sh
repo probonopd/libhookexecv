@@ -81,8 +81,8 @@ fi
 
 MNT_WINEPREFIX="/tmp/.AppName.unionfs" # TODO: Use the name of the app
 
-# Load bundled WINEPREFIX if existing
-if [ -d "$HERE/wineprefix" ] ; then
+# Load bundled WINEPREFIX if existing and if $WINEPREFIX is not set
+if [ -d "$HERE/wineprefix" ] && [ -z "$WINEPREFIX" ] ; then
   RO_WINEPREFIX="$HERE/wineprefix" # WINEPREFIX in the AppDir
   RW_WINEPREFIX_OVERLAY="$HOME/.AppName" # TODO: Use the name of the app
   mkdir -p "$MNT_WINEPREFIX" "$RW_WINEPREFIX_OVERLAY"
