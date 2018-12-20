@@ -59,13 +59,16 @@ echo "deb [trusted=yes] https://repo.iovisor.org/apt/xenial xenial-nightly main"
 sudo apt-get update
 sudo apt-get install -y bcc-tools
 
-sudo /usr/share/bcc/tools/opensnoop | grep squashfs | cut -d '/' -f 5-99 | \
-    sudo tee keeplist
+rm tmp.* || true
+./Downloads/NotepadPlusPlus-3.5-x86_64.AppImage --appimage-extract 
+
+( sudo /usr/share/bcc/tools/opensnoop | grep squashfs | cut -d '/' -f 5-99 | sudo tee keeplist ) &
 
 ./squashfs-root/AppRun &
 PID=$!
-sleep 10
-kill -9 $PID
+sleep 20
+kill $PID
+sleep 5
 
 sudo killall opensnoop
 
