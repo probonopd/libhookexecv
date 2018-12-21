@@ -1,8 +1,5 @@
 #!/bin/bash
 
-# Be verbose
-set -x
-
 # sudo add-apt-repository "deb http://archive.ubuntu.com/ubuntu $(lsb_release -sc) universe"
 sudo dpkg --add-architecture i386
 sudo apt-get update
@@ -169,8 +166,8 @@ cd ..
 export WINEDLLOVERRIDES="mscoree,mshtml="
 mkdir -p ./Wine.AppDir/wineprefixnew
 export WINEPREFIX=$(readlink -f ./Wine.AppDir/wineprefixnew)
-./Wine.AppDir/AppRun wineboot
-./Wine.AppDir/AppRun wineboot
+./Wine.AppDir/AppRun wineboot.exe
+./Wine.AppDir/AppRun wineboot.exe
 sleep 5
 # Need to ensure that we have system.reg userdef.reg user.reg, otherwise explorer.exe will not launch
 ls -lh "$WINEPREFIX"
@@ -212,7 +209,7 @@ while read p; do
     echo "KEEP $p"
   else
     echo rm "Wine.AppDir/$p"
-    rm "Wine.AppDir/$p"
+    rm "Wine.AppDir/$p" || true
   fi
 done <tmp.normalized.have
 find Wine.AppDir/ -type d -empty -delete # Remove empty directories
