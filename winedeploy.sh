@@ -91,7 +91,14 @@ if [ -z "$*" ] ; then
   APPLICATION="winecfg"
 fi
 
-AppName=wine_$(echo "$HERE" | sha1sum | cut -d " " -f 1)
+# Since the AppImage gets mounted at different locations, relying on "$HERE"
+# does not good to determine a unique string per application when inside an AppImage
+if [ -z "$APPIMAGE" ]  ; then
+  AppName=wine_$(echo "$HERE" | sha1sum | cut -d " " -f 1)
+else
+  AppName=wine_$(echo "$APPIMAGE" | sha1sum | cut -d " " -f 1)
+fi
+
 MNT_WINEPREFIX="/tmp/$AppName.unionfs" # TODO: Use the name of the app
 
 # Load bundled WINEPREFIX if existing and if $WINEPREFIX is not set
