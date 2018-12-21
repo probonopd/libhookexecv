@@ -194,6 +194,7 @@ wget -c "https://notepad-plus-plus.org/repository/7.x/7.6.1/npp.7.6.1.bin.minima
 # mv tmp/* "$WINEPREFIX/drive_c/windows/system32/"
 
 # Icon
+rm ./Wine.AppDir/*.{svg,svgz,png,xpm} ./Wine.AppDir/.DirIcon || true
 wrestool -x -t 14 ./Wine.AppDir/wineprefix/drive_c/windows/system32/notepad++.exe > icon.ico
 convert icon.ico icon.png
 mkdir -p ./Wine.AppDir/usr/share/icons/hicolor/{256x256,48x48,16x16}/apps/
