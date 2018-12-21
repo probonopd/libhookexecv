@@ -205,6 +205,7 @@ cp icon-3.png ./Wine.AppDir/notepadpp.png
 sed -i -e 's|^Icon=.*|Icon=notepadpp|g' ./Wine.AppDir/*.desktop
 
 sed -i -e 's|^Name=.*|Name=NotepadPlusPlus|g' ./Wine.AppDir/*.desktop
+sed -i -e 's|^Name\[.*||g' ./Wine.AppDir/*.desktop
 sed -i -e 's|winecfg|notepad++.exe|g' ./Wine.AppDir/AppRun
 ls -lh "$WINEPREFIX"
 
