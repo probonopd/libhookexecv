@@ -78,9 +78,9 @@ export WINEDEBUG=-all # Do not print Wine debug messages
 export LC_ALL=C LANGUAGE=C
 
 # Load Explorer if no arguments given
-EXPLORER=""
-if [ -z "$@" ] ; then
-  EXPLORER="winecfg"
+APPLICATION=""
+if [ -z "$*" ] ; then
+  APPLICATION="winecfg"
 fi
 
 MNT_WINEPREFIX="/tmp/.AppName.unionfs" # TODO: Use the name of the app
@@ -103,10 +103,10 @@ atexit()
 }
 
 # LANG=C is a workaround for: "wine: loadlocale.c:129: _nl_intern_locale_data: Assertion (...) failed"; FIXME
-if [ -z "$EXPLORER" ] ; then
+if [ -z "$APPLICATION" ] ; then
   LANG=C LD_PRELOAD="$HERE/lib/libhookexecv.so" "$WINELDLIBRARY" "$HERE/bin/wine" "$@" | cat
 else
-  LANG=C LD_PRELOAD="$HERE/lib/libhookexecv.so" "$WINELDLIBRARY" "$HERE/bin/wine" "$EXPLORER" | cat
+  LANG=C LD_PRELOAD="$HERE/lib/libhookexecv.so" "$WINELDLIBRARY" "$HERE/bin/wine" "$APPLICATION" | cat
 fi
 EOF
 chmod +x AppRun
