@@ -49,7 +49,7 @@ rm -f lib/i386-linux-gnu/ld-*.so
 # Workaround for:
 # p11-kit: couldn't load module
 rm usr/lib/i386-linux-gnu/libp11-* || true
-find squashfs-root/ -path '*libp11*' -delete || true
+find . -path '*libp11*' -delete || true
 
 # Get libhookexecv.so
 cp ../libhookexecv.so lib/libhookexecv.so
