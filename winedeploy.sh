@@ -51,6 +51,12 @@ rm -f lib/i386-linux-gnu/ld-*.so
 rm usr/lib/i386-linux-gnu/libp11-* || true
 find . -path '*libp11*' -delete || true
 
+# Only use Windows fonts. Do not attempt to use fonts from the host
+# This should greatly speed up first-time launch times
+# and get rid of fontconfig messages
+sed -i -e 's|fontconfig|xxxxconfig|g'  lib/wine/gdi32.dll.so
+find . -path '*fontconfig*' -delete
+
 # Get libhookexecv.so
 cp ../libhookexecv.so lib/libhookexecv.so
 
