@@ -3,7 +3,7 @@
 # sudo add-apt-repository "deb http://archive.ubuntu.com/ubuntu $(lsb_release -sc) universe"
 sudo dpkg --add-architecture i386
 sudo apt-get update
-sudo apt install p7zip-full # For Notepad++
+sudo apt install p7zip-full icoutils # For Notepad++
 
 # Get Wine
 wget -c https://www.playonlinux.com/wine/binaries/linux-x86/PlayOnLinux-wine-3.5-linux-x86.pol
@@ -192,6 +192,16 @@ wget -c "https://notepad-plus-plus.org/repository/7.x/7.6.1/npp.7.6.1.bin.minima
 # wget -c "http://download3.portableapps.com/portableapps/Notepad++Portable/NotepadPlusPlusPortable_7.6.paf.exe"
 # 7z x -y -otmp NotepadPlusPlusPortable_7.6.paf.exe 
 # mv tmp/* "$WINEPREFIX/drive_c/windows/system32/"
+
+# Icon
+wrestool -x -t 14 ./Wine.AppDir/wineprefix/drive_c/windows/system32/notepad++.exe > icon.ico
+convert icon.ico icon.png
+mkdir -p ./Wine.AppDir/usr/share/icons/hicolor/{256x256,48x48,16x16}/apps/
+cp icon-3.png ./Wine.AppDir/usr/share/icons/hicolor/256x256/apps/notepadpp.png
+cp icon-6.png ./Wine.AppDir/usr/share/icons/hicolor/48x48/apps/notepadpp.png
+cp icon-8.png ./Wine.AppDir/usr/share/icons/hicolor/16x16/apps/notepadpp.png
+cp icon-3.png ./Wine.AppDir/notepadpp.png
+sed -i -e 's|^Icon=.*|Icon=notepadpp|g' ./Wine.AppDir/*.desktop
 
 sed -i -e 's|^Name=.*|Name=NotepadPlusPlus|g' ./Wine.AppDir/*.desktop
 sed -i -e 's|winecfg|notepad++.exe|g' ./Wine.AppDir/AppRun
