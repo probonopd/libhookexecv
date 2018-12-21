@@ -115,7 +115,7 @@ atexit()
   while pgrep -f "$HERE/bin/wineserver" ; do sleep 1 ; done
   pkill -f "$HERE/usr/bin/unionfs-fuse"
   sleep 1
-  rm -r "$MNT_WINEPREFIX" "$RW_WINEPREFIX_OVERLAY"
+  rm -r "$MNT_WINEPREFIX" # "$RW_WINEPREFIX_OVERLAY"
 }
 
 
