@@ -64,9 +64,6 @@ rm tmp.* || true
 
 ( sudo /usr/share/bcc/tools/opensnoop | grep squashfs | tr -s ' ' | cut -d ' ' -f 5 | sudo tee keeplist ) &
 
-# Delete existing WINEPREFIX overlay
-rm -rf /home/me/.AppName/
-
 ./squashfs-root/AppRun # Without existing WINEPREFIX overlay
 ./squashfs-root/AppRun # With existing WINEPREFIX overlay
 
@@ -75,14 +72,17 @@ sudo killall opensnoop
 cat keeplist | sort | uniq > tmp.sorted
 
 # Canonicalize all filenames
+SQ=$(readlink -f .)/squashfs-root/
 while read p; do
   readlink -f "$p" >> tmp.normalized.want
 done <tmp.sorted
+sed -i -e 's|'$SQ'||g' tmp.normalized.want
 
 find squashfs-root/ -type f -or -type l > tmp.avail
 while read p; do
   readlink -f "$p" >> tmp.normalized.have
 done <tmp.avail
+sed -i -e 's|'$SQ'||g' tmp.normalized.have
 
 wc -l tmp.normalized.*
 
@@ -91,12 +91,15 @@ while read p; do
   if [[ $p =~ .*AppRun ]] || [[ $p =~ .*fuse.* ]] || [[ $p =~ .*copyright ]] || [[ $p =~ .*.desktop ]] || [[ $p =~ .*png ]] || [[ $p =~ .*svg ]] || [ ! -z "$(grep "$p" tmp.normalized.want)" ] ; then 
     echo "KEEP $p"
   else
-    echo rm "$p"
-    rm "$p"
+    echo rm "squashfs-root/$p"
+    rm "squashfs-root/$p"
   fi
 done <tmp.normalized.have
 
 
 # Remove empty directories
 find squashfs-root/ -type d -empty -delete
+
+# Make minimized AppImage
+ARCH=x86_64 ./appimagetool-x86_64.AppImage ./squashfs-root/
 ```
