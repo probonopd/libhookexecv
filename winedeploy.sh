@@ -200,6 +200,23 @@ sed -i -e 's|^Name=.*|Name=NotepadPlusPlus|g' ./Wine.AppDir/*.desktop
 sed -i -e 's|winecfg|notepad++.exe|g' ./Wine.AppDir/AppRun
 ls -lh "$WINEPREFIX"
 
+# Delete unneeded files
+SQ=$(readlink -f .)/Wine.AppDir/
+find Wine.AppDir/ -type f -or -type l > tmp.avail
+while read p; do
+  readlink -f "$p" >> tmp.normalized.have
+done <tmp.avail
+sed -i -e 's|'$SQ'||g' tmp.normalized.have
+while read p; do
+  if [[ $p =~ .*AppRun ]] || [[ $p =~ .*fuse.* ]] || [[ $p =~ .*copyright ]] || [[ $p =~ .*.desktop ]] || [[ $p =~ .*png ]] || [[ $p =~ .*svg ]] || [ ! -z "$(grep "$p" NotepadPlusPlus.manifest)" ] ; then 
+    echo "KEEP $p"
+  else
+    echo rm "Wine.AppDir/$p"
+    rm "Wine.AppDir/$p"
+  fi
+done <tmp.normalized.have
+find Wine.AppDir/ -type d -empty -delete # Remove empty directories
+
 ARCH=x86_64 ./appimagetool-x86_64.AppImage -g ./Wine.AppDir
 
 ( cd ./Wine.AppDir ; tar cfvz ../wineprefix.tar.gz wineprefix/ )
