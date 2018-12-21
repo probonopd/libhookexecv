@@ -128,7 +128,11 @@ if [ ! -z $APPIMAGE ] ; then
 else
   BINARY_NAME=$(basename "$0")
 fi
-if [ -e "$HERE/bin/$BINARY_NAME" ] ; then
+if [ -e "$HERE/bin/$1" ] ; then
+  MAIN="$HERE/bin/$1" ; shift
+elif [ -e "$HERE/usr/bin/$1" ] ; then
+  MAIN="$HERE/usr/bin/$1" ; shift
+elif [ -e "$HERE/bin/$BINARY_NAME" ] ; then
   MAIN="$HERE/bin/$BINARY_NAME"
 elif [ -e "$HERE/usr/bin/$BINARY_NAME" ] ; then
   MAIN="$HERE/usr/bin/$BINARY_NAME"
