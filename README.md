@@ -51,54 +51,20 @@ WINEPREFIX=$(readlink -f wineprefix) ./Wine_Windows_Program_Loader-3.5-x86_64.Ap
 ```
 ## Minimizing
 
-__Work in progress.__
-
 ```
-echo "deb [trusted=yes] https://repo.iovisor.org/apt/xenial xenial-nightly main" | \
-    sudo tee /etc/apt/sources.list.d/iovisor.list
-sudo apt-get update
-sudo apt-get install -y bcc-tools
-
-rm tmp.* || true
+mkdir squashfs-root
+sudo mount -t tmpfs tmpfs squashfs-root/ -o strictatime,nodiratime 
 ./Downloads/NotepadPlusPlus-3.5-x86_64.AppImage --appimage-extract 
 
-( sudo /usr/share/bcc/tools/opensnoop | grep squashfs | tr -s ' ' | cut -d ' ' -f 5 | sudo tee keeplist ) &
+touch test
 
 ./squashfs-root/AppRun # Without existing WINEPREFIX overlay
 ./squashfs-root/AppRun # With existing WINEPREFIX overlay
 
-sudo killall opensnoop
-
-cat keeplist | sort | uniq > tmp.sorted
-
-# Canonicalize all filenames
-SQ=$(readlink -f .)/squashfs-root/
-while read p; do
-  readlink -f "$p" >> tmp.normalized.want
-done <tmp.sorted
-sed -i -e 's|'$SQ'||g' tmp.normalized.want
-
-find squashfs-root/ -type f -or -type l > tmp.avail
-while read p; do
-  readlink -f "$p" >> tmp.normalized.have
-done <tmp.avail
-sed -i -e 's|'$SQ'||g' tmp.normalized.have
-
-wc -l tmp.normalized.*
-
-# Delete unwanted files
-while read p; do
-  if [[ $p =~ .*AppRun ]] || [[ $p =~ .*fuse.* ]] || [[ $p =~ .*copyright ]] || [[ $p =~ .*.desktop ]] || [[ $p =~ .*png ]] || [[ $p =~ .*svg ]] || [ ! -z "$(grep "$p" tmp.normalized.want)" ] ; then 
-    echo "KEEP $p"
-  else
-    echo rm "squashfs-root/$p"
-    rm "squashfs-root/$p"
-  fi
-done <tmp.normalized.have
-
-
-# Remove empty directories
-find squashfs-root/ -type d -empty -delete
+find squashfs-root/ -mindepth 3 -anewer test -not -path '*/share/icons/*' -not -path '*/share/applications/*' -not -path '*/share/metainfo/*' 
+find squashfs-root/ -mindepth 3 -not -anewer test -not -path '*/share/icons/*' -not -path '*/share/applications/*' -not -path '*/share/metainfo/*' -delete
+./squashfs-root/AppRun 
+# Does it still run when thinned?
 
 # Make minimized AppImage
 ARCH=x86_64 ./appimagetool-x86_64.AppImage ./squashfs-root/
