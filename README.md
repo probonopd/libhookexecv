@@ -70,3 +70,14 @@ find squashfs-root/ -type d -empty -delete
 # Make minimized AppImage
 ARCH=x86_64 ./appimagetool-x86_64.AppImage ./squashfs-root/
 ```
+
+What if we need to use a local developer machine to determine the set of needed files but want to generate the minimized AppDir on a build machine? Use a `MANIFEST` file that specifies the wanted files:
+
+```
+# Make a MANIFEST (on a local developer machine)
+( cd squashfs-root/ ; find . -type f -or -type s | sort | uniq  > ../MANIFEST )
+
+# Delete everything from the AppDir that is not in the MANIFEST
+( cd appdir/ ; find . -type f -or -type s | sort | uniq > ../ALLFILES ; diff --new-line-format="" --unchanged-line-format="" ../ALLFILES ../MANIFEST | xargs -r rm )
+find appdir/ -type d -empty -delete
+```
