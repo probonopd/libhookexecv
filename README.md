@@ -62,7 +62,8 @@ touch test
 ./squashfs-root/AppRun # With existing WINEPREFIX overlay
 
 find squashfs-root/ -mindepth 3 -anewer test -not -path '*/share/icons/*' -not -path '*/share/applications/*' -not -path '*/share/metainfo/*' 
-find squashfs-root/ -mindepth 3 -not -anewer test -not -path '*/share/icons/*' -not -path '*/share/applications/*' -not -path '*/share/metainfo/*' -delete
+find squashfs-root/ -mindepth 3 -not -anewer test -not -path '*/share/icons/*' -not -path '*/share/applications/*' -not -path '*/share/metainfo/*' -delete || true
+find squashfs-root/ -type d -empty -delete
 ./squashfs-root/AppRun 
 # Does it still run when thinned?
 
