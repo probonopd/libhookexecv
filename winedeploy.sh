@@ -30,7 +30,15 @@ apt download fuse unionfs-fuse libfuse2 # 32-bit versions seemingly do not work 
 # apt download libc6:i386 # It is already included above
 
 mkdir -p ./Wine.AppDir
-tar xfvj PlayOnLinux-wine-*-linux-x86.pol -C ./Wine.AppDir --strip-components=2 wineversion/
+
+##################################################################
+
+tar xf wine-4.2-7-proton-x86.tar.xz -C ./Wine.AppDir
+ls -lh ./Wine.AppDir
+find Wine.AppDir/ | grep desktop || true
+
+##################################################################
+
 cd Wine.AppDir/
 
 # Extract debs
