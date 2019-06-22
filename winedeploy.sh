@@ -5,9 +5,6 @@ sudo dpkg --add-architecture i386
 sudo apt-get update
 sudo apt install p7zip-full icoutils # For Notepad++
 
-# Get Wine
-wget -c https://www.playonlinux.com/wine/binaries/linux-x86/PlayOnLinux-wine-3.5-linux-x86.pol
-
 # Get old Wine (for icons and such)
 # apt download libc6:i386
 # ./W	dpkg -x wine*.deb .
@@ -33,6 +30,9 @@ mkdir -p ./Wine.AppDir
 
 ##################################################################
 
+# Get Wine
+# wget -c "https://www.playonlinux.com/wine/binaries/linux-x86/PlayOnLinux-wine-3.5-linux-x86.pol"
+wget -c "https://github.com/Kron4ek/Wine-Builds/releases/download/4.2-7-proton/wine-4.2-7-proton-x86.tar.xz"
 tar xf wine-4.2-7-proton-x86.tar.xz -C ./Wine.AppDir
 ls -lh ./Wine.AppDir
 find Wine.AppDir/ | grep desktop || true
