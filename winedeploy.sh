@@ -39,8 +39,9 @@ wget -c "https://github.com/Kron4ek/Wine-Builds/releases/download/4.2-7-proton/w
 tar xf wine-4.2-7-proton-x86.tar.xz -C ./Wine.AppDir --strip-components=1
 
 ### FIXME
-if [ ! -e Wine.AppDir/wine.desktop] ; then
-cat > Wine.AppDir/wine.desktop <<\EOF
+mkdir -p Wine.AppDir/usr/share/applications/
+if [ ! -e Wine.AppDir/usr/share/applications/wine.desktop ] ; then
+cat > Wine.AppDir/usr/share/applications/wine.desktop <<\EOF
 [Desktop Entry]
 Exec=wine
 Name=Wine Windows Program Loader
