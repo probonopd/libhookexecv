@@ -38,6 +38,23 @@ mkdir -p ./Wine.AppDir
 wget -c "https://github.com/Kron4ek/Wine-Builds/releases/download/4.2-7-proton/wine-4.2-7-proton-x86.tar.xz"
 tar xf wine-4.2-7-proton-x86.tar.xz -C ./Wine.AppDir --strip-components=1
 
+### FIXME
+if [ ! -e Wine.AppDir/wine.desktop] ; then
+cat > Wine.AppDir/wine.desktop <<\EOF
+[Desktop Entry]
+Exec=wine
+Name=Wine Windows Program Loader
+Type=Application
+Categories=System;Emulator;
+Icon=wine
+EOF
+fi
+
+### FIXME
+if [ ! -e Wine.AppDir/wine.desktop] ; then
+touch Wine.AppDir/wine.svg
+fi
+
 ls -lh ./Wine.AppDir
 find Wine.AppDir/ | grep desktop || true
 
