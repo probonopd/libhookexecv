@@ -191,6 +191,7 @@ rm -rf lib64/
 # so that the desktop file etc. are in the correct place for desktop integration
 cp -r usr/share share/ && rm -rf usr/share
 ( cd usr/ ; ln -s ../share . )
+cp -Rf usr/share/share/* usr/share/ ; rm -rf usr/share/share # FIXME
 find usr/share/
 
 grep "Categories=" usr/share/applications/wine.desktop || echo 'Categories=System;Emulator;' >> usr/share/applications/wine.desktop
