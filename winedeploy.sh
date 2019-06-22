@@ -31,7 +31,7 @@ apt download fuse unionfs-fuse libfuse2 # 32-bit versions seemingly do not work 
 
 mkdir -p ./Wine.AppDir
 tar xfvj PlayOnLinux-wine-*-linux-x86.pol -C ./Wine.AppDir --strip-components=2 wineversion/
-find wineversion/ -type f -name 'wine.desktop' -exec echo 'Categories=System;Emulator;' >> {} \;
+find ./Wine.AppDir -type f -name 'wine.desktop' -exec echo 'Categories=System;Emulator;' >> {} \;
 cd Wine.AppDir/
 
 # Extract debs
