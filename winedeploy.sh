@@ -191,6 +191,7 @@ rm -rf lib64/
 # so that the desktop file etc. are in the correct place for desktop integration
 cp -r usr/share share/ && rm -rf usr/share
 ( cd usr/ ; ln -s ../share . )
+find usr/share/
 
 grep "Categories=" usr/share/applications/wine.desktop || echo 'Categories=System;Emulator;' >> usr/share/applications/wine.desktop
 cp usr/share/applications/wine.desktop .
