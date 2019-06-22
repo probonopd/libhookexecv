@@ -31,9 +31,13 @@ mkdir -p ./Wine.AppDir
 ##################################################################
 
 # Get Wine
+
 # wget -c "https://www.playonlinux.com/wine/binaries/linux-x86/PlayOnLinux-wine-3.5-linux-x86.pol"
+# tar xfj PlayOnLinux-wine-*-linux-x86.pol -C ./Wine.AppDir --strip-components=2 wineversion/
+
 wget -c "https://github.com/Kron4ek/Wine-Builds/releases/download/4.2-7-proton/wine-4.2-7-proton-x86.tar.xz"
-tar xf wine-4.2-7-proton-x86.tar.xz -C ./Wine.AppDir
+tar xf wine-4.2-7-proton-x86.tar.xz -C ./Wine.AppDir --strip-components=1
+
 ls -lh ./Wine.AppDir
 find Wine.AppDir/ | grep desktop || true
 
