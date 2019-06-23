@@ -214,12 +214,15 @@ mkdir -p ./Wine.AppDir/wineprefixnew
 export WINEPREFIX=$(readlink -f ./Wine.AppDir/wineprefixnew)
 ./Wine.AppDir/AppRun wineboot.exe
 ./Wine.AppDir/AppRun wineboot.exe
+sleep 5
+# Need to ensure that we have system.reg userdef.reg user.reg, otherwise explorer.exe will not launch
+ls -lh "$WINEPREFIX"
+
+# Insatll dxvk
 bash -ex ./dxvk-*/setup_dxvk.sh install
 ./Wine.AppDir/AppRun wineboot.exe
 ./Wine.AppDir/AppRun wineboot.exe
 sleep 5
-# Need to ensure that we have system.reg userdef.reg user.reg, otherwise explorer.exe will not launch
-ls -lh "$WINEPREFIX"
 
 # echo "disable" > "$WINEPREFIX/.update-timestamp" # Stop Wine from updating $WINEPREFIX automatically from time to time # This leads to non-working WINEPREFIX!
 ( cd "$WINEPREFIX/drive_c/" ; rm -rf users ; ln -s /home users ) || true # Do not hardcode username in wineprefix
