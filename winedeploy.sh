@@ -59,6 +59,12 @@ fi
 ls -lh ./Wine.AppDir
 find Wine.AppDir/ | grep desktop || true
 
+# Get dxvk; also need to run stripped down setup_dxvk.sh below
+DLD=$(wget -q "https://github.com/doitsujin/dxvk/releases" -O - | grep tar.gz | head -n 1 | cut -d '"' -f 2)
+wget -c "https://github.com/$DLD"
+tar xf dxvk-*.tar.gz
+cp ./setup_dxvk.sh ./dxvk-*/
+
 ##################################################################
 
 cd Wine.AppDir/
@@ -206,6 +212,9 @@ cd ..
 export WINEDLLOVERRIDES="mscoree,mshtml="
 mkdir -p ./Wine.AppDir/wineprefixnew
 export WINEPREFIX=$(readlink -f ./Wine.AppDir/wineprefixnew)
+./Wine.AppDir/AppRun wineboot.exe
+./Wine.AppDir/AppRun wineboot.exe
+bash -ex ./dxvk-*/setup_dxvk.sh install
 ./Wine.AppDir/AppRun wineboot.exe
 ./Wine.AppDir/AppRun wineboot.exe
 sleep 5
