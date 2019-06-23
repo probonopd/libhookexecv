@@ -45,7 +45,7 @@ fi
 
 # create native dll override
 overrideDll() {
-  wine reg add 'HKEY_CURRENT_USER\Software\Wine\DllOverrides' /v $1 /d native /f 2>&1
+  ./Wine.AppDir/AppRun reg add 'HKEY_CURRENT_USER\Software\Wine\DllOverrides' /v $1 /d native /f 2>&1
   if [ $? -ne 0 ]; then
     echo -e "Failed to add override for $1"
     exit 1
@@ -54,7 +54,7 @@ overrideDll() {
 
 # remove dll override
 restoreDll() {
-  wine reg delete 'HKEY_CURRENT_USER\Software\Wine\DllOverrides' /v $1 /f 2>&1
+  ./Wine.AppDir/AppRun reg delete 'HKEY_CURRENT_USER\Software\Wine\DllOverrides' /v $1 /f 2>&1
   if [ $? -ne 0 ]; then
     echo "Failed to remove override for $1"
   fi
