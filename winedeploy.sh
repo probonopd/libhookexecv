@@ -65,6 +65,8 @@ wget -c "https://github.com/$DLD"
 tar xf dxvk-*.tar.gz
 cp ./setup_dxvk.sh ./dxvk-*/
 
+sed -i -e 's|^Name=.*|Name=Proton with DXVK|g' ./Wine.AppDir/*.desktop
+
 ##################################################################
 
 cd Wine.AppDir/
