@@ -33,6 +33,10 @@ mkdir -p ./Wine.AppDir
 tar xfvj PlayOnLinux-wine-*-linux-x86.pol -C ./Wine.AppDir --strip-components=2 wineversion/
 cd Wine.AppDir/
 
+# Add winetricks and cabextract
+wget "https://raw.githubusercontent.com/Winetricks/winetricks/master/src/winetricks" -P ./bin && chmod +x ./bin/winetricks
+wget "https://mex.mirror.pkgbuild.com/community/os/x86_64/cabextract-1.9.1-1-x86_64.pkg.tar.xz" -P ../ && tar xvf ../cabextract-*-x86_64.pkg.tar.xz --strip-components=1
+
 # Extract debs
 find ../.. -name '*.deb' -exec dpkg -x {} . \;
 
@@ -144,7 +148,11 @@ else
   MAIN="$HERE/bin/wine"
 fi
 
-if [ -z "$APPLICATION" ] ; then
+MIME=$(file --mime-type "$MAIN")
+
+if [ "$MIME" = "$MAIN: text/x-shellscript" ] ; then
+  "$MAIN" "$@" | cat
+elif [ -z "$APPLICATION" ] ; then
   LD_PRELOAD="$HERE/lib/libhookexecv.so" "$WINELDLIBRARY" "$MAIN" "$@" | cat
 else
   LD_PRELOAD="$HERE/lib/libhookexecv.so" "$WINELDLIBRARY" "$MAIN" "$APPLICATION" | cat
