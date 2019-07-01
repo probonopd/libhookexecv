@@ -181,7 +181,23 @@ sleep 5
 ls -lh "$WINEPREFIX"
 
 # echo "disable" > "$WINEPREFIX/.update-timestamp" # Stop Wine from updating $WINEPREFIX automatically from time to time # This leads to non-working WINEPREFIX!
-( cd "$WINEPREFIX/drive_c/" ; rm -rf users ; ln -s /home users ) || true # Do not hardcode username in wineprefix
+cd "$WINEPREFIX/drive_c/"
+
+MIME1=$(file --mime-type users)
+if [ "$MIME1" = "users: inode/symlink" ]; then
+   rm -rf users
+fi
+
+# create symlinks to important user folders
+MIME2=$(file --mime-type users/$USER)
+if [ ! -e "users" ] || [ ! -e "users/$USER" ] ; then
+   mkdir -p "users/$USER"
+   ln -s ~/Desktop "users/$USER/Desktop"
+   ln -s ~/Documents "users/$USER/My Documents"
+   ln -s ~/Pictures "users/$USER/My Pictures"
+   ln -s ~/Videos "users/$USER/My Videos"
+fi
+
 ls -lh "$WINEPREFIX/"
 mv ./Wine.AppDir/wineprefixnew ./Wine.AppDir/wineprefix && export WINEPREFIX=$(readlink -f ./Wine.AppDir/wineprefix)
 
