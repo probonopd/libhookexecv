@@ -148,7 +148,11 @@ else
   MAIN="$HERE/bin/wine"
 fi
 
-if [ -z "$APPLICATION" ] ; then
+MIME=$(file --mime-type "$MAIN")
+
+if [ "$MIME" = "$MAIN: text/x-shellscript" ] ; then
+  "$MAIN" "$@" | cat
+elif [ -z "$APPLICATION" ] ; then
   LD_PRELOAD="$HERE/lib/libhookexecv.so" "$WINELDLIBRARY" "$MAIN" "$@" | cat
 else
   LD_PRELOAD="$HERE/lib/libhookexecv.so" "$WINELDLIBRARY" "$MAIN" "$APPLICATION" | cat
