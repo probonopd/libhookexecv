@@ -105,6 +105,15 @@ fi
 
 MNT_WINEPREFIX="/tmp/$AppName.unionfs" # TODO: Use the name of the app
 
+# remove C:\users symlink to /home for older wineprefix.tar.gz files
+if [ -n "$WINEPREFIX" ] ; then
+  MIME1=$(file --mime-type $WINEPREFIX/drive_c/users)
+
+  if [ "$MIME1" = "$WINEPREFIX/drive_c/users: inode/symlink" ]; then
+    rm -rf "$WINEPREFIX/drive_c/users"
+  fi
+fi
+
 # Load bundled WINEPREFIX if existing and if $WINEPREFIX is not set
 if [ -d "$HERE/wineprefix" ] && [ -z "$WINEPREFIX" ] ; then
   RO_WINEPREFIX="$HERE/wineprefix" # WINEPREFIX in the AppDir
@@ -189,22 +198,7 @@ sleep 5
 ls -lh "$WINEPREFIX"
 
 # echo "disable" > "$WINEPREFIX/.update-timestamp" # Stop Wine from updating $WINEPREFIX automatically from time to time # This leads to non-working WINEPREFIX!
-cd "$WINEPREFIX/drive_c/"
-
-MIME1=$(file --mime-type users)
-if [ "$MIME1" = "users: inode/symlink" ]; then
-   rm -rf users
-fi
-
-# create symlinks to important user folders
-MIME2=$(file --mime-type users/$USER)
-if [ ! -e "users" ] || [ ! -e "users/$USER" ] ; then
-   mkdir -p "users/$USER"
-   ln -s ~/Desktop "users/$USER/Desktop"
-   ln -s ~/Documents "users/$USER/My Documents"
-   ln -s ~/Pictures "users/$USER/My Pictures"
-   ln -s ~/Videos "users/$USER/My Videos"
-fi
+( cd "$WINEPREFIX/drive_c/" ; rm -rf users ) || true # Do not hardcode username in wineprefix
 
 ls -lh "$WINEPREFIX/"
 mv ./Wine.AppDir/wineprefixnew ./Wine.AppDir/wineprefix && export WINEPREFIX=$(readlink -f ./Wine.AppDir/wineprefix)
