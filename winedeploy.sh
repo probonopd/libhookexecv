@@ -32,6 +32,7 @@ apt download fuse unionfs-fuse libfuse2 # 32-bit versions seemingly do not work 
 mkdir -p ./Wine.AppDir
 tar zxvf PlayOnLinux-wine-*-linux-x86.tar.gz -C ./Wine.AppDir
 cd Wine.AppDir/
+rm -rf include
 
 # Extract debs
 find ../.. -name '*.deb' -exec dpkg -x {} . \;
