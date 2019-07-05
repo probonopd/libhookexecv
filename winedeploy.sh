@@ -157,6 +157,11 @@ else
   MAIN="$HERE/bin/wine"
 fi
 
+# create missing registry files to ensure wine runs correctly
+if [ ! -e "$WINEPREFIX/system.reg" ] ; then
+  LD_PRELOAD="$HERE/lib/libhookexecv.so" "$WINELDLIBRARY" "$HERE/bin/wine" "wineboot" "-u" | cat
+fi
+
 MIME=$(file --mime-type "$MAIN")
 
 if [ "$MIME" = "$MAIN: text/x-shellscript" ] ; then
