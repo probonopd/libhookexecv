@@ -6,7 +6,7 @@ sudo apt-get update
 sudo apt install p7zip-full icoutils # For Notepad++
 
 # Get Wine
-wget -c https://www.playonlinux.com/wine/binaries/linux-x86/PlayOnLinux-wine-3.20-linux-x86.pol
+wget -c https://www.playonlinux.com/wine/binaries/phoenicis/upstream-linux-x86/PlayOnLinux-wine-4.10-upstream-linux-x86.tar.gz
 
 # Get old Wine (for icons and such)
 # apt download libc6:i386
@@ -30,8 +30,9 @@ apt download fuse unionfs-fuse libfuse2 # 32-bit versions seemingly do not work 
 # apt download libc6:i386 # It is already included above
 
 mkdir -p ./Wine.AppDir
-tar xfvj PlayOnLinux-wine-*-linux-x86.pol -C ./Wine.AppDir --strip-components=2 wineversion/
+tar zxvf PlayOnLinux-wine-*-linux-x86.tar.gz -C ./Wine.AppDir
 cd Wine.AppDir/
+rm -rf include
 
 # Add winetricks and cabextract
 wget "https://raw.githubusercontent.com/Winetricks/winetricks/master/src/winetricks" -P ./bin && chmod +x ./bin/winetricks
