@@ -146,6 +146,7 @@ else
   BINARY_NAME=$(basename "$0")
 fi
 if [ ! -z "$1" ] && [ -e "$HERE/bin/$1" ] ; then
+  APPLICATION="$1"
   MAIN="$HERE/bin/$1" ; shift
 elif [ ! -z "$1" ] && [ -e "$HERE/usr/bin/$1" ] ; then
   MAIN="$HERE/usr/bin/$1" ; shift
@@ -165,7 +166,14 @@ fi
 MIME=$(file --mime-type "$MAIN")
 
 if [ "$MIME" = "$MAIN: text/x-shellscript" ] ; then
-  "$MAIN" "$@" | cat
+  if [ "$APPLICATION" = "winetricks" ] ; then
+    # https://wiki.winehq.org/Winetricks
+    "$MAIN" "$@" | cat
+  elif [ ! -z "$APPLICATION" ] ; then
+    # shell scripts in /bin/ that need to be run as 'wine wineprogram'
+    # msiexec, notepad, regedit, regsvr32, wineboot, winecfg, wineconsole, winedbg, winefile, winemine, winepath
+    LD_PRELOAD="$HERE/lib/libhookexecv.so" "$WINELDLIBRARY" "$HERE/bin/wine" "$APPLICATION" "$@" | cat
+  fi
 elif [ -z "$APPLICATION" ] ; then
   LD_PRELOAD="$HERE/lib/libhookexecv.so" "$WINELDLIBRARY" "$MAIN" "$@" | cat
 else
